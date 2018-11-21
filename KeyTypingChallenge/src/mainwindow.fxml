@@ -13,8 +13,10 @@
 <VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
    <children>
       <Label fx:id="lbTime" text="time" />
-      <Label fx:id="console" text="Label" />
-      <Label fx:id="lbKeystrokesTotal" text="Label" />
+      <Label fx:id="lbKeystrokesTotal" text="keystrokestotal" />
       <Label fx:id="lbKeystrokesPerSecond" text="Label" />
+      <ProgressBar fx:id="pbKeysPerSecond" prefWidth="200.0" progress="0.0" />
+      <ProgressBar fx:id="pbKeystrokesTotal" prefWidth="200.0" progress="0.0" />
+      <Label fx:id="console" text="console" />
    </children>
 </VBox>

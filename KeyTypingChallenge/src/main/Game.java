@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -21,7 +22,9 @@ public class Game {
 	public static enum Gamestatus { RUNNING, STOPPED };
 	private ObjectProperty<Gamestatus> gamestatus = new SimpleObjectProperty<Gamestatus>(Gamestatus.STOPPED);
 	private IntegerProperty keystrokes = new SimpleIntegerProperty(0);
-	
+	private DoubleProperty keysPerSecond = new SimpleDoubleProperty(0);
+	private double maxKeysPerSecond = 0.0;
+	private long gamestartms = 0;
 	
 	public Game (DoubleProperty timeProperty){
 		this.timeProperty = timeProperty;
@@ -35,13 +38,28 @@ public class Game {
 		return keystrokes;
 	}
 	
+	public DoubleProperty keysPerSecProperty() {
+		return keysPerSecond;
+	}
+	
 	public void startGame() {
 		startTimer();
 		keystrokes.set(0);
+		maxKeysPerSecond = 0.0;
+	}
+	
+	public double getMaxKeysPerSecond() {
+		return maxKeysPerSecond;
 	}
 	
 	public void increaseKeystrokes() {
-		keystrokes.set(keystrokes.get()+1);
+		int numKeystrokes = keystrokes.get();
+		keystrokes.set(numKeystrokes+1);
+		double keysPerSecondValue = ((double)numKeystrokes)/(System.currentTimeMillis()-gamestartms)*1000;
+		keysPerSecond.set(keysPerSecondValue);
+		if(keysPerSecondValue > maxKeysPerSecond) {
+			maxKeysPerSecond = keysPerSecondValue;
+		}
 	}
 	
 	private void startTimer() {
@@ -76,6 +94,7 @@ public class Game {
 		});
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+        gamestartms  = System.currentTimeMillis();
 	}
 
 }
