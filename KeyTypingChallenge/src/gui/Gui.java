@@ -5,6 +5,7 @@ import java.net.URL;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -28,7 +29,6 @@ public class Gui {
 		Controller controller = loader.getController();
         // Show the scene containing the root layout.
         Scene scene = new Scene(rootLayout);
-        scene.setOnKeyPressed(ke -> controller.handleKeypress(ke));
         primaryStage.setScene(scene);
         primaryStage.setTitle(Constants.WINDOW_TITLE);
         primaryStage.show();

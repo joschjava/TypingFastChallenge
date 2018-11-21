@@ -26,6 +26,7 @@ public class Game {
 	private double maxKeysPerSecond = 0.0;
 	private long gamestartms = 0;
 	
+	
 	public Game (DoubleProperty timeProperty){
 		this.timeProperty = timeProperty;
 	}
