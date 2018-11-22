@@ -138,7 +138,11 @@ public class Controller implements Initializable{
 				pbKeystrokesTotal.setProgress((newValue.doubleValue()%100)/100 ); 
 				if(newValue.intValue() % 100 == 0 && newValue.intValue() <= (barStyles.length-1)*100) {
 					try {
-					pbKeystrokesTotal.getStyleClass().add(barStyles[newValue.intValue()/100]);
+						int pbNr = newValue.intValue()/100;
+						if(pbNr != 0) {
+							pbKeystrokesTotal.getStyleClass().remove(barStyles[pbNr-1]);
+						}
+						pbKeystrokesTotal.getStyleClass().add(barStyles[pbNr]);
 					} catch (ArrayIndexOutOfBoundsException e) {
 						e.printStackTrace();
 					}
@@ -318,6 +322,7 @@ public class Controller implements Initializable{
 	public void onGameStatusChanged(State newState) {
 		switch(newState) {
 		case TYPE_NAME:
+			tfConsole.setText("");
 			addConsoleOutput(gameMenu.getOutput());
 			tfConsole.setEditable(true);
 			lbHighscore.setVisible(false);
@@ -332,6 +337,7 @@ public class Controller implements Initializable{
 			break;
 			
 		case READY_FOR_GAME:
+			game.reset();
 			fadeGameUI(true);
 			counter = 0;
 			sound.prepareSound();

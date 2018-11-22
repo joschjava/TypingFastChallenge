@@ -12,11 +12,12 @@ import javafx.scene.media.MediaPlayer;
 public class Sound {
 
 	private List<File> files;
-	private int counter = 1;
+	private int counter = 4;
 	private MediaPlayer mediaPlayer;
 	
 	public Sound() {
 		files = (List<File>) FileUtils.listFiles(new File("bin/"), FileFilterUtils.suffixFileFilter(".mp3"), null);
+		files.addAll((List<File>) FileUtils.listFiles(new File("bin/"), FileFilterUtils.suffixFileFilter(".MP3"), null));
 		files.forEach(file-> System.out.println(file.getName()));
 		prepareSound();
 	}

@@ -39,6 +39,11 @@ public class Game {
 		return keystrokes.get();
 	}
 	
+	public void reset() {
+		keystrokes.set(0);
+		keysPerSecProperty().set(0);
+	}
+	
 	public void startGame(Sound sound) {
 		keystrokes.set(0);
 		maxKeysPerSecond = 30.0;
