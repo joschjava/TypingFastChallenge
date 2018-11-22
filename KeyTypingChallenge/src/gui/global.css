@@ -1,0 +1,58 @@
+.label {
+	-fx-text-fill: #69aa58;
+	-fx-font: 20 "Lucida Console";
+	-fx-padding: 5px;
+}
+
+.vbox {
+	-fx-text-fill: #69aa58;
+	-fx-background-color: #091114;
+	-fx-border-color: #69aa58;
+    -fx-border-width: 2px;
+    -fx-font: 20 "Lucida Console";
+}
+
+.scene {
+	-fx-background-color: #000000;
+}
+
+.header-label{
+	-fx-text-fill: #69aa58;
+	-fx-background-color: #157325;
+	-fx-padding: 5px;
+}
+
+.textfield-as-label {
+    -fx-text-fill: green;
+    -fx-font: 20 "Lucida Console";
+}
+
+
+.text-area .scroll-bar:vertical:disabled {
+    -fx-opacity: 0;
+}
+
+.text-area {
+	text-area-background: #091114;
+    -fx-background-insets: 0;
+    -fx-background-color: #091114;
+}
+
+.text-area .content {
+    -fx-background-color: #091114;
+}
+
+.text-area:focused .content {
+   -fx-background-color: #091114; 
+}
+
+.text-area:focused {
+    -fx-highlight-fill: #091114;
+}
+
+.text-area:disabled {
+	text-area-background: #091114;
+    -fx-background-insets: 0;
+    -fx-background-color: #091114;
+	-fx-opacity: 1.0;
+}

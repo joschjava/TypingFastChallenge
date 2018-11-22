@@ -5,11 +5,8 @@ import java.net.URL;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import main.Constants;
 import main.KeyTypingChallenge;
 
@@ -20,13 +17,13 @@ public class Gui {
         URL res = KeyTypingChallenge.class.getResource("/mainwindow.fxml");
         loader.setLocation(res);
 
-        VBox rootLayout = null;
+        BorderPane rootLayout = null;
 		try {
-			rootLayout = (VBox) loader.load();
+			rootLayout = (BorderPane) loader.load();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Controller controller = loader.getController();
+
         // Show the scene containing the root layout.
         Scene scene = new Scene(rootLayout);
         primaryStage.setScene(scene);

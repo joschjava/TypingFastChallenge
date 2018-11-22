@@ -1,4 +1,16 @@
 /* Dont forget to add the progresses in Java Strings */
+.progressbasic{
+	 -fx-accent: #69aa58;
+	 -fx-control-inner-background: #157325;
+	  -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+    -fx-margin: 0;
+    -fx-border-width:0;
+}
+.progress-bar .track{
+    -fx-background-color: #157325;
+}
 .progress1  { -fx-accent: green;  }
 .progress2 { -fx-accent: yellow; }
 .progress3 { -fx-accent: orange; }

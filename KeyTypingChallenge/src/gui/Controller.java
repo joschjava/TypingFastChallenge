@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import domain.HighscoreObject;
@@ -23,7 +22,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import main.Constants;
 import main.Game;
 import main.GameMenu;
@@ -32,7 +31,7 @@ import main.GameMenu.State;
 public class Controller implements Initializable{
 
 	@FXML
-	VBox root;
+	BorderPane root;
 	
 	@FXML
 	TextArea tfConsole;
@@ -42,9 +41,6 @@ public class Controller implements Initializable{
 	
 	@FXML
 	Label lbKeystrokesTotal;
-	
-	@FXML
-	Label lbKeystrokesPerSecond;
 	
 	@FXML
 	ProgressBar pbKeysPerSecond;
@@ -98,7 +94,6 @@ public class Controller implements Initializable{
 		lbTime.textProperty().bind(timeProperty.asString());
 		game = new Game(timeProperty, gameMenu);
 		lbKeystrokesTotal.textProperty().bind(game.keystrokesProperty().asString());
-		lbKeystrokesPerSecond.textProperty().bind(game.keysPerSecProperty().asString());
 		game.keysPerSecProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
@@ -241,6 +236,7 @@ public class Controller implements Initializable{
 		}
 		tfConsole.setText(tfConsole.getText() + "\n" + output + consolePrefix);
 		tfConsole.positionCaret(tfConsole.getText().length());
+//		tfConsole.setScrollTop(Double.MAX_VALUE);
 	}
 		
 	private void addConsoleOutput(String output) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -10,38 +11,53 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.GridPane?>
 
-<VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
-   <children>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" stylesheets="@gui/textfield.css">
-         <top>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label fx:id="lbTime" text="time" />
-                  <Label fx:id="lbKeystrokesTotal" text="keystrokestotal" />
-                  <Label fx:id="lbKeystrokesPerSecond" text="Label" />
-                  <ProgressBar fx:id="pbKeysPerSecond" prefWidth="200.0" progress="0.0" />
-                  <ProgressBar fx:id="pbKeystrokesTotal" prefWidth="200.0" progress="0.0" />
-               </children>
-            </HBox>
-         </top>
-         <left>
-            <TextArea fx:id="tfConsole" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="522.0" wrapText="true" BorderPane.alignment="CENTER">
-               <opaqueInsets>
+<BorderPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1050.0" prefWidth="1680.0" styleClass="scene" stylesheets="@gui/global.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+		<left>
+			<VBox maxHeight="1.7976931348623157E308" styleClass="vbox" stylesheets="@gui/global.css">
+				<children>
+					<Label maxWidth="1.7976931348623157E308" styleClass="header-label" stylesheets="@gui/global.css" text="Console">
+               <VBox.margin>
                   <Insets />
-               </opaqueInsets></TextArea>
+               </VBox.margin></Label>
+					<TextArea fx:id="tfConsole" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="627.0" prefWidth="1000.0" styleClass="textfield-as-label" stylesheets="@gui/global.css" wrapText="true" BorderPane.alignment="CENTER">
+						<opaqueInsets>
+							<Insets />
+						</opaqueInsets>
+					</TextArea>
+				</children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+			</VBox>
+		</left>
+		<right>
+			<VBox maxHeight="1.7976931348623157E308" prefHeight="940.0" prefWidth="432.0" styleClass="vbox" stylesheets="@gui/label.css" BorderPane.alignment="CENTER">
+				<children>
+					<Label maxWidth="1.7976931348623157E308" styleClass="header-label" stylesheets="@gui/global.css" text="Highscore" />
+					<Label fx:id="lbHighscoreList" text="HighscoreList" />
+				</children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+			</VBox>
+		</right>
+   <bottom>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <left>
+					<Label fx:id="lbTime" text="time" BorderPane.alignment="CENTER" />
          </left>
-         <right>
-            <VBox stylesheets="@gui/label.css" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Highscore" />
-                  <Label fx:id="lbHighscoreList" text="HighscoreList" />
-               </children>
-               <styleClass>
-                  <String fx:value="textfield-as-label" />
-                  <String fx:value="vbox" />
-               </styleClass>
-            </VBox>
-         </right>
+         <center>
+      			<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+      				<children>
+                  <Label text="Power" />
+      					<ProgressBar fx:id="pbKeysPerSecond" prefWidth="200.0" progress="0.51" styleClass="progressbasic" stylesheets="@gui/progress.css" />
+                  <Label text="Level" />
+      					<ProgressBar fx:id="pbKeystrokesTotal" prefWidth="200.0" progress="0.0" />
+      					<Label fx:id="lbKeystrokesTotal" text="100" />
+      				</children>
+      			</HBox>
+         </center>
       </BorderPane>
-   </children>
-</VBox>
+   </bottom>
+
+</BorderPane>
