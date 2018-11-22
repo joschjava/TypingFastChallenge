@@ -101,8 +101,7 @@ public class Game {
                     long elapsedNanos = timestamp - lastTime ;
                     long elapsedMillis = elapsedNanos / 1_000_000 ;
                     countdownTime -= elapsedMillis;
-                    
-//                    timeProperty.set(Precision.round(countdownTime/1000, 1));
+
                     timeProperty.set(Precision.round(countdownTime/1000.0, 1));
                     if(countdownTime <= 0) {
                     	timeProperty.set(0);

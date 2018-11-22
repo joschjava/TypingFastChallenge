@@ -1,6 +1,21 @@
 package domain;
 
-public class HighscoreObject {
+import java.io.Serializable;
+
+public class HighscoreObject implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1448355170074940051L;
+	/**
+	 * 
+	 */
+
+	
+	/**
+	 * 
+	 */
+
 	private String name;
 	private int score;
 	/**

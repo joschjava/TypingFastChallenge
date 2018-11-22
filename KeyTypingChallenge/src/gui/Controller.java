@@ -1,4 +1,10 @@
 package gui;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +82,10 @@ public class Controller implements Initializable{
 	
 	Game game;
 	GameMenu gameMenu = new GameMenu();
-	List<HighscoreObject> highscoreList = new ArrayList<HighscoreObject>();
+	ArrayList<HighscoreObject> highscoreList = loadHighscore();
 
 	private Sound sound;
+	private final static String SAVE_LOCATION = "highscore.ser";
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -130,6 +137,7 @@ public class Controller implements Initializable{
 			}
 		});
 
+		updateHighscore();
 //		gameMenu.stateProperty().set(GameMenu.State.READY_FOR_GAME);
 	}
 
@@ -265,9 +273,8 @@ public class Controller implements Initializable{
 			highscoreList.add(new HighscoreObject(gameMenu.getPlayerName(), game.getScore()));
 			addConsoleOutput(highscoreList.get(0).toString(), false);
 			updateHighscore();
+			saveHighscore(highscoreList);
 			break;
-
-		
 
 			
 		default:
@@ -280,9 +287,6 @@ public class Controller implements Initializable{
 	
 
 	private void updateHighscore() {
-		highscoreList.add(new HighscoreObject("Tester1", 123));
-		highscoreList.add(new HighscoreObject("Tester2", 23));
-		highscoreList.add(new HighscoreObject("Tester3", 444));
 		highscoreList.sort((p1, p2) -> ((Integer)p2.getScore()).compareTo(p1.getScore()));
 		StringBuilder highscoreString = new StringBuilder();
 		for(int i=0;i<highscoreList.size();i++) {
@@ -293,6 +297,38 @@ public class Controller implements Initializable{
 		lbHighscoreList.setText(highscoreString.toString());
 	}
 	
+	@SuppressWarnings("unchecked")
+	private static ArrayList<HighscoreObject> loadHighscore(){
+	      ArrayList<HighscoreObject> previous = null;
+	      try {
+	    	 File file = new File(SAVE_LOCATION);
+	    	 if(file.exists()) {
+		         FileInputStream fileIn = new FileInputStream(file);
+		         ObjectInputStream in = new ObjectInputStream(fileIn);
+		         previous = (ArrayList<HighscoreObject>) in.readObject();
+		         in.close();
+		         fileIn.close();
+	    	 }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      } 
+	      if(previous == null) {
+	    	  previous = new ArrayList<HighscoreObject>();
+	      }
+	      return previous;
+	}
+	
+	private static void saveHighscore(ArrayList<HighscoreObject> previous) {
+		try {
+			FileOutputStream fileOut = new FileOutputStream(SAVE_LOCATION);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(previous);
+			out.close();
+			fileOut.close();
+		} catch (IOException i) {
+			i.printStackTrace();
+		}
+	}
 	
 	public void typeNextLetter() {
 		String curText = tfConsole.getText();
