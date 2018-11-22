@@ -18,23 +18,29 @@ public class HighscoreObject implements Serializable{
 
 	private String name;
 	private int score;
+	private String language;
+	
 	/**
 	 * @param name
 	 * @param score
 	 */
-	public HighscoreObject(String name, int score) {
+	public HighscoreObject(String name, int score, String language) {
 		this.name = name;
 		this.score = score;
+		this.language = language;
 	}
 	public String getName() {
 		return name;
+	}
+	public String getLanguage() {
+		return language;
 	}
 	public int getScore() {
 		return score;
 	}
 	@Override
 	public String toString() {
-		return name+" " + score;
+		return name+"("+language+") " + score;
 	}
 	
 	

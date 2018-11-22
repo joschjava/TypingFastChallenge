@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import org.apache.commons.math3.util.Precision;
 
 import domain.HighscoreObject;
+import domain.Language;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -23,6 +24,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollBar;
@@ -63,6 +65,15 @@ public class Controller implements Initializable{
 	@FXML 
 	Label lbHighscore;
 	
+	@FXML
+	ProgressBar pbTime;
+	
+	@FXML
+	Label lbPower;
+	
+	@FXML
+	Label lbLevel;
+	
 	int counter = 0;
 	
 	
@@ -88,12 +99,17 @@ public class Controller implements Initializable{
 
 	private final String[] barStyles = {"progress1", "progress2", "progress3", "progress4", "progress5", "progress6"};
 	
+
+	
 	Game game;
 	GameMenu gameMenu = new GameMenu();
 	ArrayList<HighscoreObject> highscoreList = loadHighscore();
 
+	LanguageChooser languageChooser = new LanguageChooser();
+	Language curLanguage = null;
 	private Sound sound;
 	private final static String SAVE_LOCATION = "highscore.ser";
+
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -104,6 +120,7 @@ public class Controller implements Initializable{
 		tfConsole.positionCaret(tfConsole.getText().length());
 		DoubleProperty timeProperty = new SimpleDoubleProperty(Constants.SECONDS_PER_GAME);
 		lbTime.textProperty().bind(timeProperty.asString());
+		timeProperty.addListener((observable, oldValue, newValue) -> { pbTime.setProgress(newValue.doubleValue()/Constants.SECONDS_PER_GAME); });
 		game = new Game(timeProperty, gameMenu);
 		lbKeystrokesTotal.textProperty().bind(game.keystrokesProperty().asString());
 		game.keysPerSecProperty().addListener(new ChangeListener<Number>() {
@@ -144,10 +161,19 @@ public class Controller implements Initializable{
 		});
 
 		updateHighscore();
+		
 //		playEndGameAnimation();
 //		gameMenu.stateProperty().set(GameMenu.State.READY_FOR_GAME);
+		
 	}
 
+	public void setupAfterInit() {
+		Node[] gameNodes = getGameNodes();
+		for (int j = 0; j < gameNodes.length; j++) {
+			gameNodes[j].setOpacity(0.0);
+		}
+	}
+	
 	public void startGame() {
 		game.startGame(sound);
 
@@ -209,6 +235,29 @@ public class Controller implements Initializable{
 			}
 		break;
 		
+		case CHOOSE_LANGUAGE:
+			
+			switch (ke.getCode()) {
+			case ENTER:
+				gameMenu.stateProperty().set(State.READY_FOR_GAME);
+				break;
+				
+			case UP:
+				curLanguage = languageChooser.getPrevious();
+				replaceLastConsoleLine(LanguageChooser.prepareLanguage(curLanguage));
+				break;
+				
+			case DOWN:
+				curLanguage = languageChooser.getNext();
+				replaceLastConsoleLine(LanguageChooser.prepareLanguage(curLanguage));
+				break;
+				
+			default:
+				ke.consume();
+				break;
+			}
+		break;
+		
 		case RUNNING:
 			ke.consume();
 			typeNextLetter();
@@ -259,6 +308,13 @@ public class Controller implements Initializable{
 		addConsoleOutput(output, true);
 	}
 	
+	private void replaceLastConsoleLine(String output) {
+		String prev = tfConsole.getText();
+		int lastLineStart = prev.lastIndexOf("\n"+Constants.CONSOLE_PREFIX);
+		prev = prev.substring(0, lastLineStart);
+		tfConsole.setText(prev + "\n"+Constants.CONSOLE_PREFIX + output);
+	}
+	
 	public void onGameStatusChanged(State newState) {
 		switch(newState) {
 		case TYPE_NAME:
@@ -267,11 +323,23 @@ public class Controller implements Initializable{
 			lbHighscore.setVisible(false);
 			break;
 			
+		case CHOOSE_LANGUAGE:
+			
+			addConsoleOutput(gameMenu.getOutput(), false);
+			curLanguage = languageChooser.getFirstLanguage();
+			addConsoleOutput(Constants.CONSOLE_PREFIX + LanguageChooser.prepareLanguage(curLanguage), false);
+			tfConsole.setEditable(false);
+			break;
+			
 		case READY_FOR_GAME:
+			fadeGameUI(true);
+			counter = 0;
 			sound.prepareSound();
 			addConsoleOutput(gameMenu.getOutput());
 			tfConsole.setEditable(false);
 			break;
+			
+		
 			
 		case RUNNING:
 			sound.playSound();
@@ -281,14 +349,28 @@ public class Controller implements Initializable{
 			break;
 			
 		case FINISHED:
+			fadeGameUI(false);
 			addConsoleOutput("\n"+gameMenu.getOutput(), false);
-			highscoreList.add(new HighscoreObject(gameMenu.getPlayerName(), game.getScore()));
+			HighscoreObject highscoreUser = new HighscoreObject(gameMenu.getPlayerName(), game.getScore(), curLanguage.getName());
+			highscoreList.add(highscoreUser);
 			addConsoleOutput(highscoreList.get(0).toString(), false);
 			updateHighscore();
 			saveHighscore(highscoreList);
 			ArrayList<String> endgameText = new ArrayList<String>();
 			lbHighscore.setVisible(false);
 			endgameText.add("Game Over");
+			int place = highscoreList.indexOf(highscoreUser) +1;
+			String placeString = String.valueOf(place);
+			if(place == 1) {
+				placeString+="st";
+			} else if (place == 2) {
+				placeString+="nd";
+			} else if (place == 3) {
+				placeString+="rd";
+			} else {
+				placeString+="th";
+			}
+			endgameText.add(placeString+" place");
 			endgameText.add("Score: "+game.getScore());
 			endgameText.add("Keys/s: "+Precision.round(game.keysPerSecProperty().get(), 2));
 			playEndGameAnimation(endgameText);
@@ -331,11 +413,35 @@ public class Controller implements Initializable{
     		  gameMenu.stateProperty().set(State.TYPE_NAME);
     	  }));
     	  
-
-
-    	  
 	      textChanger.play();
 	     
+	}
+	
+	private void fadeGameUI(boolean fadeIn) {
+		double startValue = 0.0;
+		double endValue = 1.0;
+		if(!fadeIn) {
+			startValue = 1.0;
+			endValue = 0.0;
+		}
+		Timeline fadeGameUiTimeline = new Timeline();
+		Node[] gameNodes = getGameNodes();
+		int fadeInterval = 300;
+		for(int i=0;i< gameNodes.length;i++) {
+			fadeGameUiTimeline.getKeyFrames().add(generateKeyFrame(gameNodes[i], 0+i*fadeInterval, startValue));
+			fadeGameUiTimeline.getKeyFrames().add(generateKeyFrame(gameNodes[i], 1000+i*fadeInterval, endValue));
+		}
+		fadeGameUiTimeline.play();
+	}
+	
+	private Node[] getGameNodes() {
+		Node[] gameNodes = {lbPower, pbKeysPerSecond, lbLevel, pbKeystrokesTotal, lbKeystrokesTotal, lbTime, pbTime};
+		return gameNodes;
+	}
+	
+	private KeyFrame generateKeyFrame(Node node, double offset, double value) {
+		return new KeyFrame(Duration.millis(offset),
+				  new KeyValue(node.opacityProperty(), value));
 	}
 	
 	private void updateHighscore() {
@@ -384,7 +490,8 @@ public class Controller implements Initializable{
 	
 	public void typeNextLetter() {
 		String curText = tfConsole.getText();
-		tfConsole.setText(curText+exampleCode.charAt(counter++%exampleCode.length()));
+		String code = curLanguage.getSourceCode();
+		tfConsole.setText(curText+code.charAt(counter++%code.length()));
 	}
 	
 }

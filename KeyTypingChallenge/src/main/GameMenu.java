@@ -15,7 +15,7 @@ import main.GameMenu.State;
 
 public class GameMenu {
 
-	public enum State { TYPE_NAME, READY_FOR_GAME, RUNNING, FINISHED };
+	public enum State { TYPE_NAME, CHOOSE_LANGUAGE, READY_FOR_GAME, RUNNING, FINISHED,  };
 	private ObjectProperty<State> stateProperty= new SimpleObjectProperty<State>();
 	StringBuilder cachedInput = new StringBuilder();
 	String output = "";
@@ -32,6 +32,10 @@ public class GameMenu {
 			case READY_FOR_GAME:
 				onReadyForGameState();
 				break;
+			
+			case CHOOSE_LANGUAGE:
+				onChooseLanguage();
+				break;
 			}
 		});
 		
@@ -45,6 +49,10 @@ public class GameMenu {
 	private void onReadyForGameState() {
 		output = "Connected to game as "+username+"\n\n";
 		output += Constants.TEXT_START_ENTER;
+	}
+	
+	private void onChooseLanguage() {
+		output = "Choose a programming language using the arrow keys";
 	}
 
 	public void setFinished() {
@@ -61,7 +69,7 @@ public class GameMenu {
 		 Matcher m = p.matcher(input);
 		 if(m.find()) {
 			 username = m.group(1);
-			 stateProperty.set(State.READY_FOR_GAME);
+			 stateProperty.set(State.CHOOSE_LANGUAGE);
 			 return true;
 		 } else {
 			 output = "Invalid input, try again!";

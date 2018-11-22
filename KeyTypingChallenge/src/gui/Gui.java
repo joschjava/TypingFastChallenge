@@ -23,11 +23,13 @@ public class Gui {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		Controller controller = loader.getController();
         // Show the scene containing the root layout.
         Scene scene = new Scene(rootLayout);
         primaryStage.setScene(scene);
         primaryStage.setTitle(Constants.WINDOW_TITLE);
+        primaryStage.setFullScreen(true);
+        controller.setupAfterInit();
         primaryStage.show();
 	}
 

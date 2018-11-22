@@ -15,50 +15,79 @@
 <children>
 <BorderPane fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1050.0" prefWidth="1680.0" styleClass="scene" stylesheets="@gui/global.css">
 		<left>
-			<VBox maxHeight="1.7976931348623157E308" styleClass="vbox" stylesheets="@gui/global.css">
-				<children>
-					<Label maxWidth="1.7976931348623157E308" styleClass="header-label" stylesheets="@gui/global.css" text="Console">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin></Label>
-					<TextArea fx:id="tfConsole" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="806.0" prefWidth="1000.0" styleClass="textfield-as-label" stylesheets="@gui/global.css" wrapText="true" BorderPane.alignment="CENTER">
-						<opaqueInsets>
-							<Insets />
-						</opaqueInsets>
-					</TextArea>
-				</children>
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </BorderPane.margin>
-			</VBox>
-		</left>
-		<right>
-			<VBox maxHeight="1.7976931348623157E308" prefHeight="940.0" prefWidth="432.0" styleClass="vbox" stylesheets="@gui/label.css" BorderPane.alignment="CENTER">
-				<children>
-					<Label maxWidth="1.7976931348623157E308" styleClass="header-label" stylesheets="@gui/global.css" text="Highscore" />
-					<Label fx:id="lbHighscoreList" text="HighscoreList" />
-				</children>
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </BorderPane.margin>
-			</VBox>
-		</right>
-   <bottom>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <left>
-					<Label fx:id="lbTime" text="time" BorderPane.alignment="CENTER" />
-         </left>
-         <center>
-      			<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="930.0" prefWidth="1004.0">
+               <children>
+      			<VBox maxHeight="1.7976931348623157E308" styleClass="vbox" stylesheets="@gui/global.css">
       				<children>
-                  <Label text="Power" />
-      					<ProgressBar fx:id="pbKeysPerSecond" prefWidth="200.0" progress="0.51" styleClass="progressbasic" stylesheets="@gui/progress.css" />
-                  <Label text="Level" />
-      					<ProgressBar fx:id="pbKeystrokesTotal" prefWidth="200.0" progress="0.0" stylesheets="@gui/progress.css" />
+      					<Label maxWidth="1.7976931348623157E308" styleClass="header-label" stylesheets="@gui/global.css" text="Console">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                        </Label>
+      					<TextArea fx:id="tfConsole" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="806.0" prefWidth="1000.0" wrapText="true" BorderPane.alignment="CENTER">
+      						<opaqueInsets>
+      							<Insets />
+      						</opaqueInsets>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+      					</TextArea>
+      				</children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+                     <VBox.margin>
+                        <Insets left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+      			</VBox>
+      			<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
+      				<children>
+                  <Label fx:id="lbPower" text="Power" />
+      					<ProgressBar fx:id="pbKeysPerSecond" prefHeight="28.0" prefWidth="300.0" progress="0.51" styleClass="progressbasic" stylesheets="@gui/progress.css" />
+                  <Label fx:id="lbLevel" text="Level" />
+      					<ProgressBar fx:id="pbKeystrokesTotal" prefHeight="28.0" prefWidth="300.0" progress="0.0" stylesheets="@gui/progress.css" />
       					<Label fx:id="lbKeystrokesTotal" text="100" />
       				</children>
       			</HBox>
-         </center>
+               </children>
+            </VBox>
+		</left>
+		<right>
+            <VBox>
+               <children>
+      			<VBox prefHeight="838.0" prefWidth="432.0" styleClass="vbox" stylesheets="@gui/global.css" BorderPane.alignment="CENTER">
+      				<children>
+      					<Label maxWidth="1.7976931348623157E308" styleClass="header-label" stylesheets="@gui/global.css" text="Highscore" />
+      					<Label fx:id="lbHighscoreList" text="HighscoreList" />
+      				</children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+      			</VBox>
+               </children>
+            </VBox>
+		</right>
+   <bottom>
+      <BorderPane prefWidth="1680.0" BorderPane.alignment="CENTER">
+         <left>
+					<Label fx:id="lbTime" text="time" BorderPane.alignment="CENTER" />
+         </left>
+               <right>
+                  <ProgressBar fx:id="pbTime" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="33.0" prefWidth="1564.0" progress="1.0" styleClass="progressbasic" stylesheets="@gui/progress.css" BorderPane.alignment="CENTER" />
+               </right>
+               <BorderPane.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </BorderPane.margin>
+               <bottom>
+                  <Label text="Written By Jonas Scholten" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets top="20.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </bottom>
       </BorderPane>
    </bottom>
 

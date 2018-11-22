@@ -1,7 +1,6 @@
 .label {
 	-fx-text-fill: #69aa58;
 	-fx-font: 20 "Lucida Console";
-	-fx-padding: 5px;
 }
 
 .highscorelabel {
@@ -14,6 +13,7 @@
 	-fx-border-color: #69aa58;
     -fx-border-width: 2px;
     -fx-font: 20 "Lucida Console";
+    -fx-background-insets: 5px;
 }
 
 .scene {
@@ -27,8 +27,9 @@
 }
 
 .textfield-as-label {
-    -fx-text-fill: green;
+    -fx-text-fill: #69aa58;
     -fx-font: 20 "Lucida Console";
+    -fx-padding: 0px;
 }
 
 
