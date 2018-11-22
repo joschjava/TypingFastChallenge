@@ -8,5 +8,9 @@ public class Constants {
 	
 	public static final String TEXT_TYPE_NAME = "Login in to the game by typing \"ssh YOURNAME@game\"";
 	
+	public static final String TEXT_START_ENTER = "Press Enter to start the game";
+	
 	public static final String CONSOLE_PREFIX = ">";
+	
+	public static final int GAME_RESTART_TIME_MS = 5000;
 }

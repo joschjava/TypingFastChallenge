@@ -1,7 +1,10 @@
 package gui;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import domain.HighscoreObject;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
@@ -43,6 +46,9 @@ public class Controller implements Initializable{
 	@FXML
 	ProgressBar pbKeystrokesTotal;
 	
+	@FXML
+	Label lbHighscoreList;
+	
 	int counter = 0;
 	
 	
@@ -70,24 +76,26 @@ public class Controller implements Initializable{
 	
 	Game game;
 	GameMenu gameMenu = new GameMenu();
+	List<HighscoreObject> highscoreList = new ArrayList<HighscoreObject>();
+
+	private Sound sound;
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		tfConsole.setText(Constants.CONSOLE_PREFIX);
+		sound = new Sound();
+		tfConsole.setText("Loading...");
+		onGameStatusChanged(State.TYPE_NAME);
 		tfConsole.setWrapText(true);
-
-		
 		tfConsole.positionCaret(tfConsole.getText().length());
 		DoubleProperty timeProperty = new SimpleDoubleProperty(Constants.SECONDS_PER_GAME);
 		lbTime.textProperty().bind(timeProperty.asString());
-		game = new Game(timeProperty);
+		game = new Game(timeProperty, gameMenu);
 		lbKeystrokesTotal.textProperty().bind(game.keystrokesProperty().asString());
 		lbKeystrokesPerSecond.textProperty().bind(game.keysPerSecProperty().asString());
 		game.keysPerSecProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				double value = (game.keysPerSecProperty().get()/game.getMaxKeysPerSecond()+0.75)/1.8;
-				System.out.println(value);
 				pbKeysPerSecond.setProgress(value); 
 			}
 		});
@@ -97,8 +105,13 @@ public class Controller implements Initializable{
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				pbKeystrokesTotal.setProgress((newValue.doubleValue()%100)/100 ); 
-				if(newValue.intValue() % 100 == 0 && newValue.intValue() <= barStyles.length*100) {
-					pbKeystrokesTotal.getStyleClass().add(barStyles[newValue.intValue()/100-1]);
+				if(newValue.intValue() % 100 == 0 && newValue.intValue() <= (barStyles.length-1)*100) {
+					try {
+						//TODO: E
+					pbKeystrokesTotal.getStyleClass().add(barStyles[newValue.intValue()/100]);
+					} catch (ArrayIndexOutOfBoundsException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -110,30 +123,25 @@ public class Controller implements Initializable{
 			}
 		});
 
-		gameMenu.curState = GameMenu.State.READY_FOR_GAME;
+		gameMenu.stateProperty().addListener(new ChangeListener<State>() {
+			@Override
+			public void changed(ObservableValue<? extends State> observable, State oldValue, State newValue) {
+				onGameStatusChanged(newValue);
+			}
+		});
+
+//		gameMenu.stateProperty().set(GameMenu.State.READY_FOR_GAME);
 	}
 
 	public void startGame() {
-		gameMenu.setRunning();
-		game.startGame();
-		tfConsole.setText("");
-		tfConsole.setEditable(false);
+		game.startGame(sound);
+
 		ScrollBar scrollBarv = (ScrollBar)tfConsole.lookup(".scroll-bar:vertical");
 		scrollBarv.setDisable(true);
-//		tfConsole.textProperty().addListener(
-//				new ChangeListener<String>() {
-//
-//					@Override
-//					public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//						
-//					}
-//				}
-//				
-//				);
 	}
 	
 	public void handleKeypressed(KeyEvent ke) {
- 		State state = gameMenu.getCurState();
+ 		State state = gameMenu.stateProperty().get();
 		switch (state) {
 		case TYPE_NAME:
 			switch (ke.getCode()) {
@@ -152,7 +160,7 @@ public class Controller implements Initializable{
 
 			case DELETE:
 			case BACK_SPACE:
-				if (tfConsole.getText().endsWith(">")) {
+				if (tfConsole.getText().endsWith("\n"+Constants.CONSOLE_PREFIX) || tfConsole.getText().length() == 1) {
 					ke.consume();
 				}
 				break;
@@ -161,8 +169,6 @@ public class Controller implements Initializable{
 
 				int lastLine = tfConsole.getText().lastIndexOf(Constants.CONSOLE_PREFIX);
 				gameMenu.evalInput(tfConsole.getText().substring(lastLine + 1));
-				tfConsole.setText(tfConsole.getText() + "\n" + gameMenu.getOutput() + "\n" + Constants.CONSOLE_PREFIX);
-				tfConsole.positionCaret(tfConsole.getText().length());
 				ke.consume();
 				break;
 
@@ -170,7 +176,6 @@ public class Controller implements Initializable{
 				if (ke.getText().equals("<")) {
 					ke.consume();
 				}
-				System.out.println();
 				break;
 			}
 			break;
@@ -178,7 +183,7 @@ public class Controller implements Initializable{
 		case READY_FOR_GAME:
 			switch (ke.getCode()) {
 			case ENTER:
-				startGame();
+				gameMenu.stateProperty().set(State.RUNNING);
 			default:
 				ke.consume();
 				break;
@@ -191,26 +196,102 @@ public class Controller implements Initializable{
 			tfConsole.positionCaret(tfConsole.getText().length());
 			game.increaseKeystrokes();
 			break;
-		}
 		
+		case FINISHED:
+			switch (ke.getCode()) {
+			// block cursor control keys.
+			case LEFT:
+			case RIGHT:
+			case UP:
+			case DOWN:
+			case PAGE_UP:
+			case PAGE_DOWN:
+			case HOME:
+			case END:
+			case TAB:
+				ke.consume();
+				break;
+
+			case DELETE:
+			case BACK_SPACE:
+				if (tfConsole.getText().endsWith("\n"+Constants.CONSOLE_PREFIX)) {
+					ke.consume();
+				}
+				break;
+				
+				default:
+					break;
+			}
+			break;
+		}
+	}
+
+	private void addConsoleOutput(String output, boolean showConsolePrefix) {
+		String consolePrefix = "";
+		if(showConsolePrefix) {
+		 consolePrefix = "\n" + Constants.CONSOLE_PREFIX;
+		}
+		tfConsole.setText(tfConsole.getText() + "\n" + output + consolePrefix);
+		tfConsole.positionCaret(tfConsole.getText().length());
+	}
+		
+	private void addConsoleOutput(String output) {
+		addConsoleOutput(output, true);
 	}
 	
-//		if(game.getGameStatusProperty().get() == Gamestatus.RUNNING) {
-//			typeNextLetter();
-//			game.increaseKeystrokes();
-//		} else {
-//			switch(ke.getCode()) {
-//			case ENTER:
-//				
-//				startGame();
-//				break;
-//			default:
-//				break;
-//			
-//			}
-//		}
+	public void onGameStatusChanged(State newState) {
+		switch(newState) {
+		case TYPE_NAME:
+			addConsoleOutput(gameMenu.getOutput());
+			tfConsole.setEditable(true);
+			break;
+			
+		case READY_FOR_GAME:
+			sound.prepareSound();
+			addConsoleOutput(gameMenu.getOutput());
+			tfConsole.setEditable(false);
+			break;
+			
+		case RUNNING:
+			sound.playSound();
+			tfConsole.setText("");
+			tfConsole.setEditable(false);
+			startGame();
+			break;
+			
+		case FINISHED:
+//			sound.stopSound();
+			addConsoleOutput("\n"+gameMenu.getOutput(), false);
+			highscoreList.add(new HighscoreObject(gameMenu.getPlayerName(), game.getScore()));
+			addConsoleOutput(highscoreList.get(0).toString(), false);
+			updateHighscore();
+			break;
 
+		
+
+			
+		default:
+			tfConsole.setEditable(true);
+			break;
+		}
+	}
 	
+	//"nano " FÜR programmiersprache
+	
+
+	private void updateHighscore() {
+		highscoreList.add(new HighscoreObject("Tester1", 123));
+		highscoreList.add(new HighscoreObject("Tester2", 23));
+		highscoreList.add(new HighscoreObject("Tester3", 444));
+		highscoreList.sort((p1, p2) -> ((Integer)p2.getScore()).compareTo(p1.getScore()));
+		StringBuilder highscoreString = new StringBuilder();
+		for(int i=0;i<highscoreList.size();i++) {
+			highscoreString.append((i +1)+ ". ");
+			highscoreString.append(highscoreList.get(i).toString());
+			highscoreString.append("\n");
+		}
+		lbHighscoreList.setText(highscoreString.toString());
+	}
 	
 	
 	public void typeNextLetter() {

@@ -12,23 +12,36 @@
 
 <VBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
    <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-         <children>
-            <Label fx:id="lbTime" text="time" />
-            <Label fx:id="lbKeystrokesTotal" text="keystrokestotal" />
-            <Label fx:id="lbKeystrokesPerSecond" text="Label" />
-            <ProgressBar fx:id="pbKeysPerSecond" prefWidth="200.0" progress="0.0" />
-            <ProgressBar fx:id="pbKeystrokesTotal" prefWidth="200.0" progress="0.0" />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <VBox>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" stylesheets="@gui/textfield.css">
+         <top>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <TextArea fx:id="tfConsole" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="800.0" wrapText="true" />
+                  <Label fx:id="lbTime" text="time" />
+                  <Label fx:id="lbKeystrokesTotal" text="keystrokestotal" />
+                  <Label fx:id="lbKeystrokesPerSecond" text="Label" />
+                  <ProgressBar fx:id="pbKeysPerSecond" prefWidth="200.0" progress="0.0" />
+                  <ProgressBar fx:id="pbKeystrokesTotal" prefWidth="200.0" progress="0.0" />
                </children>
+            </HBox>
+         </top>
+         <left>
+            <TextArea fx:id="tfConsole" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="502.0" prefWidth="522.0" wrapText="true" BorderPane.alignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></TextArea>
+         </left>
+         <right>
+            <VBox stylesheets="@gui/label.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Highscore" />
+                  <Label fx:id="lbHighscoreList" text="HighscoreList" />
+               </children>
+               <styleClass>
+                  <String fx:value="textfield-as-label" />
+                  <String fx:value="vbox" />
+               </styleClass>
             </VBox>
-         </children>
-      </HBox>
+         </right>
+      </BorderPane>
    </children>
 </VBox>

@@ -1,38 +1,30 @@
 package main;
 
-import javafx.animation.Animation.Status;
-import javafx.animation.KeyFrame;
+import org.apache.commons.math3.util.Precision;
+
+import gui.Sound;
+import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.util.Duration;
 
 public class Game {
 
 	private Timeline timeline;
 	private DoubleProperty timeProperty;
 	public static enum Gamestatus { RUNNING, STOPPED };
-	private ObjectProperty<Gamestatus> gamestatus = new SimpleObjectProperty<Gamestatus>(Gamestatus.STOPPED);
+//	private ObjectProperty<Gamestatus> gamestatus = new SimpleObjectProperty<Gamestatus>(Gamestatus.STOPPED);
 	private IntegerProperty keystrokes = new SimpleIntegerProperty(0);
 	private DoubleProperty keysPerSecond = new SimpleDoubleProperty(0);
 	private double maxKeysPerSecond = 0.0;
 	private long gamestartms = 0;
+	private GameMenu gameMenu;
 	
-	
-	public Game (DoubleProperty timeProperty){
+	public Game (DoubleProperty timeProperty, GameMenu gameMenu){
 		this.timeProperty = timeProperty;
-	}
-	
-	public ObjectProperty<Gamestatus> getGameStatusProperty() {
-		return gamestatus;
+		this.gameMenu = gameMenu;
 	}
 	
 	public IntegerProperty keystrokesProperty() {
@@ -43,10 +35,14 @@ public class Game {
 		return keysPerSecond;
 	}
 	
-	public void startGame() {
-		startTimer();
+	public int getScore() {
+		return keystrokes.get();
+	}
+	
+	public void startGame(Sound sound) {
 		keystrokes.set(0);
-		maxKeysPerSecond = 0.0;
+		maxKeysPerSecond = 30.0;
+		startTimer(sound);
 	}
 	
 	public double getMaxKeysPerSecond() {
@@ -63,38 +59,93 @@ public class Game {
 		}
 	}
 	
-	private void startTimer() {
+	private void startTimer(Sound sound) {
         if (timeline != null) {
             timeline.stop();
         }
-        timeProperty.set(Constants.SECONDS_PER_GAME);
-        
-        timeline = new Timeline(new KeyFrame(Duration.millis(100),
-        		  		new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	timeProperty.set(Math.floor((timeProperty.get()-0.1)*10)/10);
-            	if(timeProperty.get() == 0) {
-            		timeline.stop();
-            		System.out.println("Timeline stopped");
-            	}
-            }
-            
-        }));
-        timeline.getStatus();
-		timeline.statusProperty().addListener(new ChangeListener<Status>() {
+       
+		if (sound.getMaximumTime() >= Constants.SECONDS_PER_GAME * 1000) {
+			AnimationTimer countdown = new AnimationTimer() {
+				private long countdownTime = Constants.SECONDS_PER_GAME * 1000;
 
-			@Override
-			public void changed(ObservableValue<? extends Status> observable, Status oldValue, Status newValue) {
-				if(newValue.equals(Status.PAUSED) || newValue.equals(Status.STOPPED)) {
-					gamestatus.set(Gamestatus.STOPPED);
-				} else {
-					gamestatus.set(Gamestatus.RUNNING);
+				@Override
+				public void handle(long timestamp) {
+					timeProperty.set(Precision.round((countdownTime - sound.getTimeStamp())/1000, 1));
+					if (timeProperty.get() <= 0) {
+						timeProperty.set(0);
+						stop();
+					}
 				}
-			}
-		});
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+
+				@Override
+				public void stop() {
+					gameMenu.setFinished();
+					super.stop();
+				}
+			};
+			countdown.start();
+        } else {
+            AnimationTimer countdown = new AnimationTimer() {
+
+                private static final long STOPPED = -1 ;
+                private long lastTime = STOPPED;
+                private long countdownTime = Constants.SECONDS_PER_GAME*1000;
+
+                @Override
+                public void handle(long timestamp) {
+                    if (lastTime == STOPPED) {
+                        gameMenu.setRunning();
+                        lastTime = timestamp;
+                        timeProperty.set(countdownTime);
+                    }
+                    long elapsedNanos = timestamp - lastTime ;
+                    long elapsedMillis = elapsedNanos / 1_000_000 ;
+                    countdownTime -= elapsedMillis;
+                    
+//                    timeProperty.set(Precision.round(countdownTime/1000, 1));
+                    timeProperty.set(Precision.round(countdownTime/1000.0, 1));
+                    if(countdownTime <= 0) {
+                    	timeProperty.set(0);
+                    	stop();
+                    }
+                    lastTime = timestamp;
+                }
+
+                @Override
+                public void stop() {
+                	gameMenu.setFinished();
+                    super.stop();
+                }
+            };
+            countdown.start();
+        }
+        
+       
+        
+//        timeline = new Timeline(new KeyFrame(Duration.millis(100),
+//        		  		new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//            	timeProperty.set(Math.floor((timeProperty.get()-0.1)*10)/10);
+//            	if(timeProperty.get() == 0) {
+//            		timeline.stop();
+//            	}
+//            }
+//            
+//        }));
+//        timeline.getStatus();
+//		timeline.statusProperty().addListener(new ChangeListener<Status>() {
+//			@Override
+//			public void changed(ObservableValue<? extends Status> observable, Status oldValue, Status newValue) {
+//				if(newValue.equals(Status.PAUSED) || newValue.equals(Status.STOPPED)) {
+//					gameMenu.setFinished();
+//				} else {
+//					gameMenu.setRunning();
+//				}
+//			}
+//		});
+//        timeline.setCycleCount(Timeline.INDEFINITE);
+//        timeline.play();
         gamestartms  = System.currentTimeMillis();
 	}
 
