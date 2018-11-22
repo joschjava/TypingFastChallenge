@@ -119,32 +119,7 @@ public class Game {
             countdown.start();
         }
         
-       
-        
-//        timeline = new Timeline(new KeyFrame(Duration.millis(100),
-//        		  		new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//            	timeProperty.set(Math.floor((timeProperty.get()-0.1)*10)/10);
-//            	if(timeProperty.get() == 0) {
-//            		timeline.stop();
-//            	}
-//            }
-//            
-//        }));
-//        timeline.getStatus();
-//		timeline.statusProperty().addListener(new ChangeListener<Status>() {
-//			@Override
-//			public void changed(ObservableValue<? extends Status> observable, Status oldValue, Status newValue) {
-//				if(newValue.equals(Status.PAUSED) || newValue.equals(Status.STOPPED)) {
-//					gameMenu.setFinished();
-//				} else {
-//					gameMenu.setRunning();
-//				}
-//			}
-//		});
-//        timeline.setCycleCount(Timeline.INDEFINITE);
-//        timeline.play();
+
         gamestartms  = System.currentTimeMillis();
 	}
 

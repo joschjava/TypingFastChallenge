@@ -5,7 +5,7 @@ import java.net.URL;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import main.Constants;
 import main.KeyTypingChallenge;
@@ -17,9 +17,9 @@ public class Gui {
         URL res = KeyTypingChallenge.class.getResource("/mainwindow.fxml");
         loader.setLocation(res);
 
-        BorderPane rootLayout = null;
+        StackPane rootLayout = null;
 		try {
-			rootLayout = (BorderPane) loader.load();
+			rootLayout = (StackPane) loader.load();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

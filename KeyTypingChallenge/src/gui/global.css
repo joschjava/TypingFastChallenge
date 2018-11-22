@@ -4,6 +4,10 @@
 	-fx-padding: 5px;
 }
 
+.highscorelabel {
+	    -fx-font: 200 "Lucida Console";
+}
+
 .vbox {
 	-fx-text-fill: #69aa58;
 	-fx-background-color: #091114;

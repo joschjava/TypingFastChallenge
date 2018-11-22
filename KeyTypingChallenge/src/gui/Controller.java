@@ -9,11 +9,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.apache.commons.math3.util.Precision;
+
 import domain.HighscoreObject;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,8 +27,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Duration;
 import main.Constants;
 import main.Game;
 import main.GameMenu;
@@ -51,6 +60,9 @@ public class Controller implements Initializable{
 	@FXML
 	Label lbHighscoreList;
 	
+	@FXML 
+	Label lbHighscore;
+	
 	int counter = 0;
 	
 	
@@ -73,8 +85,8 @@ public class Controller implements Initializable{
 			"	}\r\n" + 
 			"}\r\n" + 
 			" ";
-//	, "progress3", "progress4", "progress5", "progress6"
-	private final String[] barStyles = {"progress1", "progress2"};
+
+	private final String[] barStyles = {"progress1", "progress2", "progress3", "progress4", "progress5", "progress6"};
 	
 	Game game;
 	GameMenu gameMenu = new GameMenu();
@@ -109,7 +121,6 @@ public class Controller implements Initializable{
 				pbKeystrokesTotal.setProgress((newValue.doubleValue()%100)/100 ); 
 				if(newValue.intValue() % 100 == 0 && newValue.intValue() <= (barStyles.length-1)*100) {
 					try {
-						//TODO: E
 					pbKeystrokesTotal.getStyleClass().add(barStyles[newValue.intValue()/100]);
 					} catch (ArrayIndexOutOfBoundsException e) {
 						e.printStackTrace();
@@ -133,6 +144,7 @@ public class Controller implements Initializable{
 		});
 
 		updateHighscore();
+//		playEndGameAnimation();
 //		gameMenu.stateProperty().set(GameMenu.State.READY_FOR_GAME);
 	}
 
@@ -147,6 +159,7 @@ public class Controller implements Initializable{
  		State state = gameMenu.stateProperty().get();
 		switch (state) {
 		case TYPE_NAME:
+
 			switch (ke.getCode()) {
 			// block cursor control keys.
 			case LEFT:
@@ -171,7 +184,10 @@ public class Controller implements Initializable{
 			case ENTER:
 
 				int lastLine = tfConsole.getText().lastIndexOf(Constants.CONSOLE_PREFIX);
-				gameMenu.evalInput(tfConsole.getText().substring(lastLine + 1));
+				boolean valid = gameMenu.evalInput(tfConsole.getText().substring(lastLine + 1));
+				if(!valid) {
+					addConsoleOutput(gameMenu.getOutput());
+				}
 				ke.consume();
 				break;
 
@@ -248,6 +264,7 @@ public class Controller implements Initializable{
 		case TYPE_NAME:
 			addConsoleOutput(gameMenu.getOutput());
 			tfConsole.setEditable(true);
+			lbHighscore.setVisible(false);
 			break;
 			
 		case READY_FOR_GAME:
@@ -264,12 +281,17 @@ public class Controller implements Initializable{
 			break;
 			
 		case FINISHED:
-//			sound.stopSound();
 			addConsoleOutput("\n"+gameMenu.getOutput(), false);
 			highscoreList.add(new HighscoreObject(gameMenu.getPlayerName(), game.getScore()));
 			addConsoleOutput(highscoreList.get(0).toString(), false);
 			updateHighscore();
 			saveHighscore(highscoreList);
+			ArrayList<String> endgameText = new ArrayList<String>();
+			lbHighscore.setVisible(false);
+			endgameText.add("Game Over");
+			endgameText.add("Score: "+game.getScore());
+			endgameText.add("Keys/s: "+Precision.round(game.keysPerSecProperty().get(), 2));
+			playEndGameAnimation(endgameText);
 			break;
 
 			
@@ -281,7 +303,41 @@ public class Controller implements Initializable{
 	
 	//"nano " FÜR programmiersprache
 	
+	public void playEndGameAnimation(ArrayList<String> messages) {
+		Glow glow = ((Glow)((DropShadow) lbHighscore.getEffect()).getInput());
+	      Timeline glowAnimation = new Timeline(new KeyFrame(Duration.millis(0),
+	    		  new KeyValue(glow.levelProperty(), 1.0)),
+	    		  new KeyFrame(Duration.millis(200),
+			    		  new KeyValue(glow.levelProperty(), 0.0))) ;
+	      glowAnimation.setCycleCount(Timeline.INDEFINITE);
+	      glowAnimation.setAutoReverse(true);
+	      glowAnimation.play();
+	      Timeline textChanger = new Timeline();
+	   
+    	  textChanger.getKeyFrames().add(new KeyFrame(Duration.millis(0), (ActionEvent ae) -> {
+        	  lbHighscore.setVisible(true);
+    	  }));
+	      
+    	  for(int i=0; i< messages.size();i++) {
+    		  int duration = i*3000;
+    		  final String message = messages.get(i);
+    		  textChanger.getKeyFrames().add(new KeyFrame(Duration.millis(duration),
+    				  new KeyValue(lbHighscore.textProperty(), message)));
+    	  }
+    	  
+    	  textChanger.getKeyFrames().add(new KeyFrame(Duration.millis(messages.size()*3000), (ActionEvent ae) -> {
+    		  glowAnimation.stop();
+    		  lbHighscore.setVisible(false);
+    		  gameMenu.stateProperty().set(State.TYPE_NAME);
+    	  }));
+    	  
 
+
+    	  
+	      textChanger.play();
+	     
+	}
+	
 	private void updateHighscore() {
 		highscoreList.sort((p1, p2) -> ((Integer)p2.getScore()).compareTo(p1.getScore()));
 		StringBuilder highscoreString = new StringBuilder();

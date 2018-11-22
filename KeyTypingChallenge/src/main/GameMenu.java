@@ -50,30 +50,23 @@ public class GameMenu {
 	public void setFinished() {
 		output = "Game over!";
 		stateProperty.set(State.FINISHED);
-		Timeline delayedReboot = new Timeline(new KeyFrame(Duration.millis(Constants.GAME_RESTART_TIME_MS),
-        		  		new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	stateProperty.set(State.TYPE_NAME);
-            }
-        }));
-		delayedReboot.play();
 	}
 	
 	public String getPlayerName() {
 		return username;
 	}
 	
-	public void evalInput(String input) {
+	public boolean evalInput(String input) {
 		Pattern p = Pattern.compile("^ssh (\\w+)@game");
 		 Matcher m = p.matcher(input);
 		 if(m.find()) {
 			 username = m.group(1);
 			 stateProperty.set(State.READY_FOR_GAME);
+			 return true;
 		 } else {
 			 output = "Invalid input, try again!";
+			 return false;
 		 }
-		cachedInput = new StringBuilder();
 	}
 	
 	public String getOutput() {
