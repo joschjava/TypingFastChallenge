@@ -12,7 +12,12 @@ import javafx.scene.media.MediaPlayer;
 public class Sound {
 
 	private List<File> files;
-	private int counter = 4;
+	private int counter = 6;
+	
+	
+	
+	
+	
 	private MediaPlayer mediaPlayer;
 	
 	public Sound() {

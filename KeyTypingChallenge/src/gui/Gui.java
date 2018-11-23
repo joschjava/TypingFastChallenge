@@ -28,7 +28,10 @@ public class Gui {
         Scene scene = new Scene(rootLayout);
         primaryStage.setScene(scene);
         primaryStage.setTitle(Constants.WINDOW_TITLE);
-        primaryStage.setFullScreen(true);
+//        primaryStage.setFullScreen(true);
+        
+        
+        
         controller.setupAfterInit();
         primaryStage.show();
 	}

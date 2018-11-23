@@ -10,309 +10,555 @@ public class LanguageChooser {
 
 	private ArrayList<Language> languageList = new ArrayList<Language>();
 	private int position = 0;
-	
-	public LanguageChooser(){
+
+	public LanguageChooser() {
 		Language java = new Language();
 		java.setConsoleString("java");
 		java.setName("Java");
-		java.setSourceCode("package org.springframework.boot.cli;\r\n" + 
-				"\r\n" + 
-				"public final class SpringCli {\r\n" + 
-				"\r\n" + 
-				"	private SpringCli() {\r\n" + 
-				"	}\r\n" + 
-				"\r\n" + 
-				"	public static void main(String... args) {\r\n" + 
-				"		System.setProperty(\"java.awt.headless\", Boolean.toString(true));\r\n" + 
-				"		LogbackInitializer.initialize();\r\n" + 
-				"\r\n" + 
-				"		CommandRunner runner = new CommandRunner(\"spring\");\r\n" + 
-				"		ClassUtils.overrideThreadContextClassLoader(createExtendedClassLoader(runner));\r\n" + 
-				"		runner.addCommand(new HelpCommand(runner));\r\n" + 
-				"		addServiceLoaderCommands(runner);\r\n" + 
-				"		runner.addCommand(new ShellCommand());\r\n" + 
-				"		runner.addCommand(new HintCommand(runner));\r\n" + 
-				"		runner.setOptionCommands(HelpCommand.class, VersionCommand.class);\r\n" + 
-				"		runner.setHiddenCommands(HintCommand.class);\r\n" + 
-				"\r\n" + 
-				"		int exitCode = runner.runAndHandleErrors(args);\r\n" + 
-				"		if (exitCode != 0) {\r\n" + 
-				"			// If successful, leave it to run in case it's a server app\r\n" + 
-				"			System.exit(exitCode);\r\n" + 
-				"		}\r\n" + 
-				"	}\r\n" + 
-				"\r\n" + 
-				"	private static void addServiceLoaderCommands(CommandRunner runner) {\r\n" + 
-				"		ServiceLoader<CommandFactory> factories = ServiceLoader\r\n" + 
-				"				.load(CommandFactory.class);\r\n" + 
-				"		for (CommandFactory factory : factories) {\r\n" + 
-				"			runner.addCommands(factory.getCommands());\r\n" + 
-				"		}\r\n" + 
-				"	}\r\n" + 
-				"\r\n" + 
-				"	private static URLClassLoader createExtendedClassLoader(CommandRunner runner) {\r\n" + 
-				"		return new URLClassLoader(getExtensionURLs(), runner.getClass().getClassLoader());\r\n" + 
-				"	}\r\n" + 
-				"\r\n" + 
-				"	private static URL[] getExtensionURLs() {\r\n" + 
-				"		List<URL> urls = new ArrayList<>();\r\n" + 
-				"		String home = SystemPropertyUtils\r\n" + 
-				"				.resolvePlaceholders(\"${spring.home:${SPRING_HOME:.}}\");\r\n" + 
-				"		File extDirectory = new File(new File(home, \"lib\"), \"ext\");\r\n" + 
-				"		if (extDirectory.isDirectory()) {\r\n" + 
-				"			for (File file : extDirectory.listFiles()) {\r\n" + 
-				"				if (file.getName().endsWith(\".jar\")) {\r\n" + 
-				"					try {\r\n" + 
-				"						urls.add(file.toURI().toURL());\r\n" + 
-				"					}\r\n" + 
-				"					catch (MalformedURLException ex) {\r\n" + 
-				"						throw new IllegalStateException(ex);\r\n" + 
-				"					}\r\n" + 
-				"				}\r\n" + 
-				"			}\r\n" + 
-				"		}\r\n" + 
-				"		return urls.toArray(new URL[0]);\r\n" + 
-				"	}\r\n" + 
-				"\r\n" + 
-				"}");
+		java.setSourceCode("package org.springframework.boot.cli;\r\n" + "\r\n" + "public final class SpringCli {\r\n"
+				+ "\r\n" + "	private SpringCli() {\r\n" + "	}\r\n" + "\r\n"
+				+ "	public static void main(String... args) {\r\n"
+				+ "		System.setProperty(\"java.awt.headless\", Boolean.toString(true));\r\n"
+				+ "		LogbackInitializer.initialize();\r\n" + "\r\n"
+				+ "		CommandRunner runner = new CommandRunner(\"spring\");\r\n"
+				+ "		ClassUtils.overrideThreadContextClassLoader(createExtendedClassLoader(runner));\r\n"
+				+ "		runner.addCommand(new HelpCommand(runner));\r\n"
+				+ "		addServiceLoaderCommands(runner);\r\n" + "		runner.addCommand(new ShellCommand());\r\n"
+				+ "		runner.addCommand(new HintCommand(runner));\r\n"
+				+ "		runner.setOptionCommands(HelpCommand.class, VersionCommand.class);\r\n"
+				+ "		runner.setHiddenCommands(HintCommand.class);\r\n" + "\r\n"
+				+ "		int exitCode = runner.runAndHandleErrors(args);\r\n" + "		if (exitCode != 0) {\r\n"
+				+ "			// If successful, leave it to run in case it's a server app\r\n"
+				+ "			System.exit(exitCode);\r\n" + "		}\r\n" + "	}\r\n" + "\r\n"
+				+ "	private static void addServiceLoaderCommands(CommandRunner runner) {\r\n"
+				+ "		ServiceLoader<CommandFactory> factories = ServiceLoader\r\n"
+				+ "				.load(CommandFactory.class);\r\n"
+				+ "		for (CommandFactory factory : factories) {\r\n"
+				+ "			runner.addCommands(factory.getCommands());\r\n" + "		}\r\n" + "	}\r\n" + "\r\n"
+				+ "	private static URLClassLoader createExtendedClassLoader(CommandRunner runner) {\r\n"
+				+ "		return new URLClassLoader(getExtensionURLs(), runner.getClass().getClassLoader());\r\n"
+				+ "	}\r\n" + "\r\n" + "	private static URL[] getExtensionURLs() {\r\n"
+				+ "		List<URL> urls = new ArrayList<>();\r\n" + "		String home = SystemPropertyUtils\r\n"
+				+ "				.resolvePlaceholders(\"${spring.home:${SPRING_HOME:.}}\");\r\n"
+				+ "		File extDirectory = new File(new File(home, \"lib\"), \"ext\");\r\n"
+				+ "		if (extDirectory.isDirectory()) {\r\n"
+				+ "			for (File file : extDirectory.listFiles()) {\r\n"
+				+ "				if (file.getName().endsWith(\".jar\")) {\r\n" + "					try {\r\n"
+				+ "						urls.add(file.toURI().toURL());\r\n" + "					}\r\n"
+				+ "					catch (MalformedURLException ex) {\r\n"
+				+ "						throw new IllegalStateException(ex);\r\n" + "					}\r\n"
+				+ "				}\r\n" + "			}\r\n" + "		}\r\n"
+				+ "		return urls.toArray(new URL[0]);\r\n" + "	}\r\n" + "\r\n" + "}");
 		languageList.add(java);
-		
+
 		Language cpp = new Language();
 		cpp.setConsoleString("cpp");
 		cpp.setName("C++");
-		cpp.setSourceCode("#include <windows.h>  // for MS Windows\r\n" + 
-				"#include <GL/glut.h>  // GLUT, include glu.h and gl.h\r\n" + 
-				" \r\n" + 
-				"/* Global variables */\r\n" + 
-				"char title[] = \"3D Shapes\";\r\n" + 
-				" \r\n" + 
-				"/* Initialize OpenGL Graphics */\r\n" + 
-				"void initGL() {\r\n" + 
-				"   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque\r\n" + 
-				"   glClearDepth(1.0f);                   // Set background depth to farthest\r\n" + 
-				"   glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling\r\n" + 
-				"   glDepthFunc(GL_LEQUAL);    // Set the type of depth-test\r\n" + 
-				"   glShadeModel(GL_SMOOTH);   // Enable smooth shading\r\n" + 
-				"   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections\r\n" + 
-				"}\r\n" + 
-				" \r\n" + 
-				"/* Handler for window-repaint event. Called back when the window first appears and\r\n" + 
-				"   whenever the window needs to be re-painted. */\r\n" + 
-				"void display() {\r\n" + 
-				"   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers\r\n" + 
-				"   glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix\r\n" + 
-				" \r\n" + 
-				"   // Render a color-cube consisting of 6 quads with different colors\r\n" + 
-				"   glLoadIdentity();                 // Reset the model-view matrix\r\n" + 
-				"   glTranslatef(1.5f, 0.0f, -7.0f);  // Move right and into the screen\r\n" + 
-				" \r\n" + 
-				"   glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads\r\n" + 
-				"      // Top face (y = 1.0f)\r\n" + 
-				"      // Define vertices in counter-clockwise (CCW) order with normal pointing out\r\n" + 
-				"      glColor3f(0.0f, 1.0f, 0.0f);     // Green\r\n" + 
-				"      glVertex3f( 1.0f, 1.0f, -1.0f);\r\n" + 
-				"      glVertex3f(-1.0f, 1.0f, -1.0f);\r\n" + 
-				"      glVertex3f(-1.0f, 1.0f,  1.0f);\r\n" + 
-				"      glVertex3f( 1.0f, 1.0f,  1.0f);\r\n" + 
-				" \r\n" + 
-				"      // Bottom face (y = -1.0f)\r\n" + 
-				"      glColor3f(1.0f, 0.5f, 0.0f);     // Orange\r\n" + 
-				"      glVertex3f( 1.0f, -1.0f,  1.0f);\r\n" + 
-				"      glVertex3f(-1.0f, -1.0f,  1.0f);\r\n" + 
-				"      glVertex3f(-1.0f, -1.0f, -1.0f);\r\n" + 
-				"      glVertex3f( 1.0f, -1.0f, -1.0f);\r\n" + 
-				" \r\n" + 
-				"      // Front face  (z = 1.0f)\r\n" + 
-				"      glColor3f(1.0f, 0.0f, 0.0f);     // Red\r\n" + 
-				"      glVertex3f( 1.0f,  1.0f, 1.0f);\r\n" + 
-				"      glVertex3f(-1.0f,  1.0f, 1.0f);\r\n" + 
-				"      glVertex3f(-1.0f, -1.0f, 1.0f);\r\n" + 
-				"      glVertex3f( 1.0f, -1.0f, 1.0f);\r\n" + 
-				" \r\n" + 
-				"      // Back face (z = -1.0f)\r\n" + 
-				"      glColor3f(1.0f, 1.0f, 0.0f);     // Yellow\r\n" + 
-				"      glVertex3f( 1.0f, -1.0f, -1.0f);\r\n" + 
-				"      glVertex3f(-1.0f, -1.0f, -1.0f);\r\n" + 
-				"      glVertex3f(-1.0f,  1.0f, -1.0f);\r\n" + 
-				"      glVertex3f( 1.0f,  1.0f, -1.0f);\r\n" + 
-				" \r\n" + 
-				"      // Left face (x = -1.0f)\r\n" + 
-				"      glColor3f(0.0f, 0.0f, 1.0f);     // Blue\r\n" + 
-				"      glVertex3f(-1.0f,  1.0f,  1.0f);\r\n" + 
-				"      glVertex3f(-1.0f,  1.0f, -1.0f);\r\n" + 
-				"      glVertex3f(-1.0f, -1.0f, -1.0f);\r\n" + 
-				"      glVertex3f(-1.0f, -1.0f,  1.0f);\r\n" + 
-				" \r\n" + 
-				"      // Right face (x = 1.0f)\r\n" + 
-				"      glColor3f(1.0f, 0.0f, 1.0f);     // Magenta\r\n" + 
-				"      glVertex3f(1.0f,  1.0f, -1.0f);\r\n" + 
-				"      glVertex3f(1.0f,  1.0f,  1.0f);\r\n" + 
-				"      glVertex3f(1.0f, -1.0f,  1.0f);\r\n" + 
-				"      glVertex3f(1.0f, -1.0f, -1.0f);\r\n" + 
-				"   glEnd();  // End of drawing color-cube\r\n" + 
-				" \r\n" + 
-				"   // Render a pyramid consists of 4 triangles\r\n" + 
-				"   glLoadIdentity();                  // Reset the model-view matrix\r\n" + 
-				"   glTranslatef(-1.5f, 0.0f, -6.0f);  // Move left and into the screen\r\n" + 
-				" \r\n" + 
-				"   glBegin(GL_TRIANGLES);           // Begin drawing the pyramid with 4 triangles\r\n" + 
-				"      // Front\r\n" + 
-				"      glColor3f(1.0f, 0.0f, 0.0f);     // Red\r\n" + 
-				"      glVertex3f( 0.0f, 1.0f, 0.0f);\r\n" + 
-				"      glColor3f(0.0f, 1.0f, 0.0f);     // Green\r\n" + 
-				"      glVertex3f(-1.0f, -1.0f, 1.0f);\r\n" + 
-				"      glColor3f(0.0f, 0.0f, 1.0f);     // Blue\r\n" + 
-				"      glVertex3f(1.0f, -1.0f, 1.0f);\r\n" + 
-				" \r\n" + 
-				"      // Right\r\n" + 
-				"      glColor3f(1.0f, 0.0f, 0.0f);     // Red\r\n" + 
-				"      glVertex3f(0.0f, 1.0f, 0.0f);\r\n" + 
-				"      glColor3f(0.0f, 0.0f, 1.0f);     // Blue\r\n" + 
-				"      glVertex3f(1.0f, -1.0f, 1.0f);\r\n" + 
-				"      glColor3f(0.0f, 1.0f, 0.0f);     // Green\r\n" + 
-				"      glVertex3f(1.0f, -1.0f, -1.0f);\r\n" + 
-				" \r\n" + 
-				"      // Back\r\n" + 
-				"      glColor3f(1.0f, 0.0f, 0.0f);     // Red\r\n" + 
-				"      glVertex3f(0.0f, 1.0f, 0.0f);\r\n" + 
-				"      glColor3f(0.0f, 1.0f, 0.0f);     // Green\r\n" + 
-				"      glVertex3f(1.0f, -1.0f, -1.0f);\r\n" + 
-				"      glColor3f(0.0f, 0.0f, 1.0f);     // Blue\r\n" + 
-				"      glVertex3f(-1.0f, -1.0f, -1.0f);\r\n" + 
-				" \r\n" + 
-				"      // Left\r\n" + 
-				"      glColor3f(1.0f,0.0f,0.0f);       // Red\r\n" + 
-				"      glVertex3f( 0.0f, 1.0f, 0.0f);\r\n" + 
-				"      glColor3f(0.0f,0.0f,1.0f);       // Blue\r\n" + 
-				"      glVertex3f(-1.0f,-1.0f,-1.0f);\r\n" + 
-				"      glColor3f(0.0f,1.0f,0.0f);       // Green\r\n" + 
-				"      glVertex3f(-1.0f,-1.0f, 1.0f);\r\n" + 
-				"   glEnd();   // Done drawing the pyramid\r\n" + 
-				" \r\n" + 
-				"   glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)\r\n" + 
-				"}\r\n" + 
-				" \r\n" + 
-				"/* Handler for window re-size event. Called back when the window first appears and\r\n" + 
-				"   whenever the window is re-sized with its new width and height */\r\n" + 
-				"void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer\r\n" + 
-				"   // Compute aspect ratio of the new window\r\n" + 
-				"   if (height == 0) height = 1;                // To prevent divide by 0\r\n" + 
-				"   GLfloat aspect = (GLfloat)width / (GLfloat)height;\r\n" + 
-				" \r\n" + 
-				"   // Set the viewport to cover the new window\r\n" + 
-				"   glViewport(0, 0, width, height);\r\n" + 
-				" \r\n" + 
-				"   // Set the aspect ratio of the clipping volume to match the viewport\r\n" + 
-				"   glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix\r\n" + 
-				"   glLoadIdentity();             // Reset\r\n" + 
-				"   // Enable perspective projection with fovy, aspect, zNear and zFar\r\n" + 
-				"   gluPerspective(45.0f, aspect, 0.1f, 100.0f);\r\n" + 
-				"}\r\n" + 
-				" \r\n" + 
-				"/* Main function: GLUT runs as a console application starting at main() */\r\n" + 
-				"int main(int argc, char** argv) {\r\n" + 
-				"   glutInit(&argc, argv);            // Initialize GLUT\r\n" + 
-				"   glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode\r\n" + 
-				"   glutInitWindowSize(640, 480);   // Set the window's initial width & height\r\n" + 
-				"   glutInitWindowPosition(50, 50); // Position the window's initial top-left corner\r\n" + 
-				"   glutCreateWindow(title);          // Create window with the given title\r\n" + 
-				"   glutDisplayFunc(display);       // Register callback handler for window re-paint event\r\n" + 
-				"   glutReshapeFunc(reshape);       // Register callback handler for window re-size event\r\n" + 
-				"   initGL();                       // Our own OpenGL initialization\r\n" + 
-				"   glutMainLoop();                 // Enter the infinite event-processing loop\r\n" + 
-				"   return 0;\r\n" + 
-				"}");
+		cpp.setSourceCode("#include <windows.h>  // for MS Windows\r\n"
+				+ "#include <GL/glut.h>  // GLUT, include glu.h and gl.h\r\n" + " \r\n" + "/* Global variables */\r\n"
+				+ "char title[] = \"3D Shapes\";\r\n" + " \r\n" + "/* Initialize OpenGL Graphics */\r\n"
+				+ "void initGL() {\r\n"
+				+ "   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque\r\n"
+				+ "   glClearDepth(1.0f);                   // Set background depth to farthest\r\n"
+				+ "   glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling\r\n"
+				+ "   glDepthFunc(GL_LEQUAL);    // Set the type of depth-test\r\n"
+				+ "   glShadeModel(GL_SMOOTH);   // Enable smooth shading\r\n"
+				+ "   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections\r\n" + "}\r\n"
+				+ " \r\n" + "/* Handler for window-repaint event. Called back when the window first appears and\r\n"
+				+ "   whenever the window needs to be re-painted. */\r\n" + "void display() {\r\n"
+				+ "   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers\r\n"
+				+ "   glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix\r\n" + " \r\n"
+				+ "   // Render a color-cube consisting of 6 quads with different colors\r\n"
+				+ "   glLoadIdentity();                 // Reset the model-view matrix\r\n"
+				+ "   glTranslatef(1.5f, 0.0f, -7.0f);  // Move right and into the screen\r\n" + " \r\n"
+				+ "   glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads\r\n"
+				+ "      // Top face (y = 1.0f)\r\n"
+				+ "      // Define vertices in counter-clockwise (CCW) order with normal pointing out\r\n"
+				+ "      glColor3f(0.0f, 1.0f, 0.0f);     // Green\r\n" + "      glVertex3f( 1.0f, 1.0f, -1.0f);\r\n"
+				+ "      glVertex3f(-1.0f, 1.0f, -1.0f);\r\n" + "      glVertex3f(-1.0f, 1.0f,  1.0f);\r\n"
+				+ "      glVertex3f( 1.0f, 1.0f,  1.0f);\r\n" + " \r\n" + "      // Bottom face (y = -1.0f)\r\n"
+				+ "      glColor3f(1.0f, 0.5f, 0.0f);     // Orange\r\n" + "      glVertex3f( 1.0f, -1.0f,  1.0f);\r\n"
+				+ "      glVertex3f(-1.0f, -1.0f,  1.0f);\r\n" + "      glVertex3f(-1.0f, -1.0f, -1.0f);\r\n"
+				+ "      glVertex3f( 1.0f, -1.0f, -1.0f);\r\n" + " \r\n" + "      // Front face  (z = 1.0f)\r\n"
+				+ "      glColor3f(1.0f, 0.0f, 0.0f);     // Red\r\n" + "      glVertex3f( 1.0f,  1.0f, 1.0f);\r\n"
+				+ "      glVertex3f(-1.0f,  1.0f, 1.0f);\r\n" + "      glVertex3f(-1.0f, -1.0f, 1.0f);\r\n"
+				+ "      glVertex3f( 1.0f, -1.0f, 1.0f);\r\n" + " \r\n" + "      // Back face (z = -1.0f)\r\n"
+				+ "      glColor3f(1.0f, 1.0f, 0.0f);     // Yellow\r\n" + "      glVertex3f( 1.0f, -1.0f, -1.0f);\r\n"
+				+ "      glVertex3f(-1.0f, -1.0f, -1.0f);\r\n" + "      glVertex3f(-1.0f,  1.0f, -1.0f);\r\n"
+				+ "      glVertex3f( 1.0f,  1.0f, -1.0f);\r\n" + " \r\n" + "      // Left face (x = -1.0f)\r\n"
+				+ "      glColor3f(0.0f, 0.0f, 1.0f);     // Blue\r\n" + "      glVertex3f(-1.0f,  1.0f,  1.0f);\r\n"
+				+ "      glVertex3f(-1.0f,  1.0f, -1.0f);\r\n" + "      glVertex3f(-1.0f, -1.0f, -1.0f);\r\n"
+				+ "      glVertex3f(-1.0f, -1.0f,  1.0f);\r\n" + " \r\n" + "      // Right face (x = 1.0f)\r\n"
+				+ "      glColor3f(1.0f, 0.0f, 1.0f);     // Magenta\r\n" + "      glVertex3f(1.0f,  1.0f, -1.0f);\r\n"
+				+ "      glVertex3f(1.0f,  1.0f,  1.0f);\r\n" + "      glVertex3f(1.0f, -1.0f,  1.0f);\r\n"
+				+ "      glVertex3f(1.0f, -1.0f, -1.0f);\r\n" + "   glEnd();  // End of drawing color-cube\r\n"
+				+ " \r\n" + "   // Render a pyramid consists of 4 triangles\r\n"
+				+ "   glLoadIdentity();                  // Reset the model-view matrix\r\n"
+				+ "   glTranslatef(-1.5f, 0.0f, -6.0f);  // Move left and into the screen\r\n" + " \r\n"
+				+ "   glBegin(GL_TRIANGLES);           // Begin drawing the pyramid with 4 triangles\r\n"
+				+ "      // Front\r\n" + "      glColor3f(1.0f, 0.0f, 0.0f);     // Red\r\n"
+				+ "      glVertex3f( 0.0f, 1.0f, 0.0f);\r\n" + "      glColor3f(0.0f, 1.0f, 0.0f);     // Green\r\n"
+				+ "      glVertex3f(-1.0f, -1.0f, 1.0f);\r\n" + "      glColor3f(0.0f, 0.0f, 1.0f);     // Blue\r\n"
+				+ "      glVertex3f(1.0f, -1.0f, 1.0f);\r\n" + " \r\n" + "      // Right\r\n"
+				+ "      glColor3f(1.0f, 0.0f, 0.0f);     // Red\r\n" + "      glVertex3f(0.0f, 1.0f, 0.0f);\r\n"
+				+ "      glColor3f(0.0f, 0.0f, 1.0f);     // Blue\r\n" + "      glVertex3f(1.0f, -1.0f, 1.0f);\r\n"
+				+ "      glColor3f(0.0f, 1.0f, 0.0f);     // Green\r\n" + "      glVertex3f(1.0f, -1.0f, -1.0f);\r\n"
+				+ " \r\n" + "      // Back\r\n" + "      glColor3f(1.0f, 0.0f, 0.0f);     // Red\r\n"
+				+ "      glVertex3f(0.0f, 1.0f, 0.0f);\r\n" + "      glColor3f(0.0f, 1.0f, 0.0f);     // Green\r\n"
+				+ "      glVertex3f(1.0f, -1.0f, -1.0f);\r\n" + "      glColor3f(0.0f, 0.0f, 1.0f);     // Blue\r\n"
+				+ "      glVertex3f(-1.0f, -1.0f, -1.0f);\r\n" + " \r\n" + "      // Left\r\n"
+				+ "      glColor3f(1.0f,0.0f,0.0f);       // Red\r\n" + "      glVertex3f( 0.0f, 1.0f, 0.0f);\r\n"
+				+ "      glColor3f(0.0f,0.0f,1.0f);       // Blue\r\n" + "      glVertex3f(-1.0f,-1.0f,-1.0f);\r\n"
+				+ "      glColor3f(0.0f,1.0f,0.0f);       // Green\r\n" + "      glVertex3f(-1.0f,-1.0f, 1.0f);\r\n"
+				+ "   glEnd();   // Done drawing the pyramid\r\n" + " \r\n"
+				+ "   glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)\r\n" + "}\r\n"
+				+ " \r\n" + "/* Handler for window re-size event. Called back when the window first appears and\r\n"
+				+ "   whenever the window is re-sized with its new width and height */\r\n"
+				+ "void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer\r\n"
+				+ "   // Compute aspect ratio of the new window\r\n"
+				+ "   if (height == 0) height = 1;                // To prevent divide by 0\r\n"
+				+ "   GLfloat aspect = (GLfloat)width / (GLfloat)height;\r\n" + " \r\n"
+				+ "   // Set the viewport to cover the new window\r\n" + "   glViewport(0, 0, width, height);\r\n"
+				+ " \r\n" + "   // Set the aspect ratio of the clipping volume to match the viewport\r\n"
+				+ "   glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix\r\n"
+				+ "   glLoadIdentity();             // Reset\r\n"
+				+ "   // Enable perspective projection with fovy, aspect, zNear and zFar\r\n"
+				+ "   gluPerspective(45.0f, aspect, 0.1f, 100.0f);\r\n" + "}\r\n" + " \r\n"
+				+ "/* Main function: GLUT runs as a console application starting at main() */\r\n"
+				+ "int main(int argc, char** argv) {\r\n"
+				+ "   glutInit(&argc, argv);            // Initialize GLUT\r\n"
+				+ "   glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode\r\n"
+				+ "   glutInitWindowSize(640, 480);   // Set the window's initial width & height\r\n"
+				+ "   glutInitWindowPosition(50, 50); // Position the window's initial top-left corner\r\n"
+				+ "   glutCreateWindow(title);          // Create window with the given title\r\n"
+				+ "   glutDisplayFunc(display);       // Register callback handler for window re-paint event\r\n"
+				+ "   glutReshapeFunc(reshape);       // Register callback handler for window re-size event\r\n"
+				+ "   initGL();                       // Our own OpenGL initialization\r\n"
+				+ "   glutMainLoop();                 // Enter the infinite event-processing loop\r\n"
+				+ "   return 0;\r\n" + "}");
 		languageList.add(cpp);
-		
+
 		Language python = new Language();
 		python.setConsoleString("py");
 		python.setName("Python");
-		python.setSourceCode("import os\r\n" + 
-				"import glob\r\n" + 
-				"import time\r\n" + 
-				"from RPLCD import CharLCD\r\n" + 
-				"\r\n" + 
-				"lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_e=35, pins_data=[33, 31, 29, 23])\r\n" + 
-				"\r\n" + 
-				"os.system('modprobe w1-gpio')\r\n" + 
-				"os.system('modprobe w1-therm')\r\n" + 
-				"\r\n" + 
-				"base_dir = '/sys/bus/w1/devices/'\r\n" + 
-				"device_folder = glob.glob(base_dir + '28*')[0]\r\n" + 
-				"device_file = device_folder + '/w1_slave'\r\n" + 
-				"\r\n" + 
-				"def read_temp_raw():\r\n" + 
-				"    f = open(device_file, 'r')\r\n" + 
-				"    lines = f.readlines()\r\n" + 
-				"    f.close()\r\n" + 
-				"    return lines\r\n" + 
-				"\r\n" + 
-				"#CELSIUS CALCULATION\r\n" + 
-				"def read_temp_c():\r\n" + 
-				"    lines = read_temp_raw()\r\n" + 
-				"    while lines[0].strip()[-3:] != 'YES':\r\n" + 
-				"        time.sleep(0.2)\r\n" + 
-				"        lines = read_temp_raw()\r\n" + 
-				"    equals_pos = lines[1].find('t=')\r\n" + 
-				"    if equals_pos != -1:\r\n" + 
-				"        temp_string = lines[1][equals_pos+2:]\r\n" + 
-				"        temp_c = int(temp_string) / 1000.0 # TEMP_STRING IS THE SENSOR OUTPUT, MAKE SURE IT'S AN INTEGER TO DO THE MATH\r\n" + 
-				"        temp_c = str(round(temp_c, 1)) # ROUND THE RESULT TO 1 PLACE AFTER THE DECIMAL, THEN CONVERT IT TO A STRING\r\n" + 
-				"        return temp_c\r\n" + 
-				"\r\n" + 
-				"#FAHRENHEIT CALCULATION\r\n" + 
-				"def read_temp_f():\r\n" + 
-				"    lines = read_temp_raw()\r\n" + 
-				"    while lines[0].strip()[-3:] != 'YES':\r\n" + 
-				"        time.sleep(0.2)\r\n" + 
-				"        lines = read_temp_raw()\r\n" + 
-				"    equals_pos = lines[1].find('t=')\r\n" + 
-				"    if equals_pos != -1:\r\n" + 
-				"        temp_string = lines[1][equals_pos+2:]\r\n" + 
-				"        temp_f = (int(temp_string) / 1000.0) * 9.0 / 5.0 + 32.0 # TEMP_STRING IS THE SENSOR OUTPUT, MAKE SURE IT'S AN INTEGER TO DO THE MATH\r\n" + 
-				"        temp_f = str(round(temp_f, 1)) # ROUND THE RESULT TO 1 PLACE AFTER THE DECIMAL, THEN CONVERT IT TO A STRING\r\n" + 
-				"        return temp_f\r\n" + 
-				"\r\n" + 
-				"while True:\r\n" + 
-				"\r\n" + 
-				"    lcd.cursor_pos = (0, 0)\r\n" + 
-				"    lcd.write_string(\"Temp: \" + read_temp_c() + unichr(223) + \"C\")\r\n" + 
-				"    lcd.cursor_pos = (1, 0)\r\n" + 
-				"    lcd.write_string(\"Temp: \" + read_temp_f() + unichr(223) + \"F\")");
+		python.setSourceCode("import os\r\n" + "import glob\r\n" + "import time\r\n" + "from RPLCD import CharLCD\r\n"
+				+ "\r\n" + "lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_e=35, pins_data=[33, 31, 29, 23])\r\n"
+				+ "\r\n" + "os.system('modprobe w1-gpio')\r\n" + "os.system('modprobe w1-therm')\r\n" + "\r\n"
+				+ "base_dir = '/sys/bus/w1/devices/'\r\n" + "device_folder = glob.glob(base_dir + '28*')[0]\r\n"
+				+ "device_file = device_folder + '/w1_slave'\r\n" + "\r\n" + "def read_temp_raw():\r\n"
+				+ "    f = open(device_file, 'r')\r\n" + "    lines = f.readlines()\r\n" + "    f.close()\r\n"
+				+ "    return lines\r\n" + "\r\n" + "#CELSIUS CALCULATION\r\n" + "def read_temp_c():\r\n"
+				+ "    lines = read_temp_raw()\r\n" + "    while lines[0].strip()[-3:] != 'YES':\r\n"
+				+ "        time.sleep(0.2)\r\n" + "        lines = read_temp_raw()\r\n"
+				+ "    equals_pos = lines[1].find('t=')\r\n" + "    if equals_pos != -1:\r\n"
+				+ "        temp_string = lines[1][equals_pos+2:]\r\n"
+				+ "        temp_c = int(temp_string) / 1000.0 # TEMP_STRING IS THE SENSOR OUTPUT, MAKE SURE IT'S AN INTEGER TO DO THE MATH\r\n"
+				+ "        temp_c = str(round(temp_c, 1)) # ROUND THE RESULT TO 1 PLACE AFTER THE DECIMAL, THEN CONVERT IT TO A STRING\r\n"
+				+ "        return temp_c\r\n" + "\r\n" + "#FAHRENHEIT CALCULATION\r\n" + "def read_temp_f():\r\n"
+				+ "    lines = read_temp_raw()\r\n" + "    while lines[0].strip()[-3:] != 'YES':\r\n"
+				+ "        time.sleep(0.2)\r\n" + "        lines = read_temp_raw()\r\n"
+				+ "    equals_pos = lines[1].find('t=')\r\n" + "    if equals_pos != -1:\r\n"
+				+ "        temp_string = lines[1][equals_pos+2:]\r\n"
+				+ "        temp_f = (int(temp_string) / 1000.0) * 9.0 / 5.0 + 32.0 # TEMP_STRING IS THE SENSOR OUTPUT, MAKE SURE IT'S AN INTEGER TO DO THE MATH\r\n"
+				+ "        temp_f = str(round(temp_f, 1)) # ROUND THE RESULT TO 1 PLACE AFTER THE DECIMAL, THEN CONVERT IT TO A STRING\r\n"
+				+ "        return temp_f\r\n" + "\r\n" + "while True:\r\n" + "\r\n" + "    lcd.cursor_pos = (0, 0)\r\n"
+				+ "    lcd.write_string(\"Temp: \" + read_temp_c() + unichr(223) + \"C\")\r\n"
+				+ "    lcd.cursor_pos = (1, 0)\r\n"
+				+ "    lcd.write_string(\"Temp: \" + read_temp_f() + unichr(223) + \"F\")");
 		languageList.add(python);
-		
-		
-		
-//		Language cpp = new Language();
-//		cpp.setConsoleString("cpp");
-//		cpp.setSourceCode("");
-//		languageList.add(cpp);
+
+		Language go = new Language();
+		go.setConsoleString("go");
+		go.setSourceCode("type Config struct {\r\n" + "	ID                        string // e.g. \"fmt [fmt.test]\"\r\n"
+				+ "	Compiler                  string\r\n" + "	Dir                       string\r\n"
+				+ "	ImportPath                string\r\n" + "	GoFiles                   []string\r\n"
+				+ "	NonGoFiles                []string\r\n" + "	ImportMap                 map[string]string\r\n"
+				+ "	PackageFile               map[string]string\r\n"
+				+ "	Standard                  map[string]bool\r\n" + "	PackageVetx               map[string]string\r\n"
+				+ "	VetxOnly                  bool\r\n" + "	VetxOutput                string\r\n"
+				+ "	SucceedOnTypecheckFailure bool\r\n" + "}\r\n" + "\r\n"
+				+ "// Main is the main function of a vet-like analysis tool that must be\r\n"
+				+ "// invoked by a build system to analyze a single package.\r\n" + "//\r\n"
+				+ "// The protocol required by 'go vet -vettool=...' is that the tool must support:\r\n" + "//\r\n"
+				+ "//      -flags          describe flags in JSON\r\n"
+				+ "//      -V=full         describe executable for build caching\r\n"
+				+ "//      foo.cfg         perform separate modular analyze on the single\r\n"
+				+ "//                      unit described by a JSON config file foo.cfg.\r\n" + "//\r\n"
+				+ "func Main(analyzers ...*analysis.Analyzer) {\r\n" + "	progname := filepath.Base(os.Args[0])\r\n"
+				+ "	log.SetFlags(0)\r\n" + "	log.SetPrefix(progname + \": \")\r\n" + "\r\n"
+				+ "	if err := analysis.Validate(analyzers); err != nil {\r\n" + "		log.Fatal(err)\r\n" + "	}\r\n"
+				+ "\r\n" + "	flag.Usage = func() {\r\n"
+				+ "		fmt.Fprintf(os.Stderr, `%[1]s is a tool for static analysis of Go programs.\r\n"
+				+ "Usage of %[1]s:\r\n" + "	%.16[1]s unit.cfg	# execute analysis specified by config file\r\n"
+				+ "	%.16[1]s help    	# general help\r\n"
+				+ "	%.16[1]s help name	# help on specific analyzer and its flags\r\n" + "`, progname)\r\n"
+				+ "		os.Exit(1)\r\n" + "	}\r\n" + "\r\n" + "	analyzers = analysisflags.Parse(analyzers, true)\r\n"
+				+ "\r\n" + "	args := flag.Args()\r\n" + "	if len(args) == 0 {\r\n" + "		flag.Usage()\r\n"
+				+ "	}\r\n" + "	if args[0] == \"help\" {\r\n"
+				+ "		analysisflags.Help(progname, analyzers, args[1:])\r\n" + "		os.Exit(0)\r\n" + "	}\r\n"
+				+ "	if len(args) != 1 || !strings.HasSuffix(args[0], \".cfg\") {\r\n"
+				+ "		log.Fatalf(\"invalid command: want .cfg file (this reduced version of %s is intended to be run only by the 'go vet' command)\", progname)\r\n"
+				+ "	}\r\n" + "	Run(args[0], analyzers)\r\n" + "}\r\n" + "\r\n"
+				+ "// Run reads the *.cfg file, runs the analysis,\r\n"
+				+ "// and calls os.Exit with an appropriate error code.\r\n"
+				+ "// It assumes flags have already been set.\r\n"
+				+ "func Run(configFile string, analyzers []*analysis.Analyzer) {\r\n"
+				+ "	cfg, err := readConfig(configFile)\r\n" + "	if err != nil {\r\n" + "		log.Fatal(err)\r\n"
+				+ "	}\r\n" + "\r\n" + "	fset := token.NewFileSet()\r\n"
+				+ "	results, err := run(fset, cfg, analyzers)\r\n" + "	if err != nil {\r\n"
+				+ "		log.Fatal(err)\r\n" + "	}\r\n" + "\r\n"
+				+ "	// In VetxOnly mode, the analysis is run only for facts.\r\n" + "	if !cfg.VetxOnly {\r\n"
+				+ "		if analysisflags.JSON {\r\n" + "			// JSON output\r\n"
+				+ "			tree := make(analysisflags.JSONTree)\r\n" + "			for _, res := range results {\r\n"
+				+ "				tree.Add(fset, cfg.ID, res.a.Name, res.diagnostics, res.err)\r\n" + "			}\r\n"
+				+ "			tree.Print()\r\n" + "		} else {\r\n" + "			// plain text\r\n"
+				+ "			exit := 0\r\n" + "			for _, res := range results {\r\n"
+				+ "				if res.err != nil {\r\n" + "					log.Println(res.err)\r\n"
+				+ "					exit = 1\r\n" + "				}\r\n" + "			}\r\n"
+				+ "			for _, res := range results {\r\n"
+				+ "				for _, diag := range res.diagnostics {\r\n"
+				+ "					analysisflags.PrintPlain(fset, diag)\r\n" + "					exit = 1\r\n"
+				+ "				}\r\n" + "			}\r\n" + "			os.Exit(exit)\r\n" + "		}\r\n" + "	}\r\n"
+				+ "\r\n" + "	os.Exit(0)\r\n" + "}\r\n" + "\r\n"
+				+ "func readConfig(filename string) (*Config, error) {\r\n"
+				+ "	data, err := ioutil.ReadFile(filename)\r\n" + "	if err != nil {\r\n" + "		return nil, err\r\n"
+				+ "	}\r\n" + "	cfg := new(Config)\r\n" + "	if err := json.Unmarshal(data, cfg); err != nil {\r\n"
+				+ "		return nil, fmt.Errorf(\"cannot decode JSON config file %s: %v\", filename, err)\r\n"
+				+ "	}\r\n" + "	if len(cfg.GoFiles) == 0 {\r\n"
+				+ "		// The go command disallows packages with no files.\r\n"
+				+ "		// The only exception is unsafe, but the go command\r\n"
+				+ "		// doesn't call vet on it.\r\n"
+				+ "		return nil, fmt.Errorf(\"package has no files: %s\", cfg.ImportPath)\r\n" + "	}\r\n"
+				+ "	return cfg, nil\r\n" + "}\r\n" + "\r\n"
+				+ "func run(fset *token.FileSet, cfg *Config, analyzers []*analysis.Analyzer) ([]result, error) {\r\n"
+				+ "	// Load, parse, typecheck.\r\n" + "	var files []*ast.File\r\n"
+				+ "	for _, name := range cfg.GoFiles {\r\n"
+				+ "		f, err := parser.ParseFile(fset, name, nil, parser.ParseComments)\r\n"
+				+ "		if err != nil {\r\n" + "			if cfg.SucceedOnTypecheckFailure {\r\n"
+				+ "				// Silently succeed; let the compiler\r\n" + "				// report parse errors.\r\n"
+				+ "				err = nil\r\n" + "			}\r\n" + "			return nil, err\r\n" + "		}\r\n"
+				+ "		files = append(files, f)\r\n" + "	}\r\n"
+				+ "	compilerImporter := importer.For(cfg.Compiler, func(path string) (io.ReadCloser, error) {\r\n"
+				+ "		// path is a resolved package path, not an import path.\r\n"
+				+ "		file, ok := cfg.PackageFile[path]\r\n" + "		if !ok {\r\n"
+				+ "			if cfg.Compiler == \"gccgo\" && cfg.Standard[path] {\r\n"
+				+ "				return nil, nil // fall back to default gccgo lookup\r\n" + "			}\r\n"
+				+ "			return nil, fmt.Errorf(\"no package file for %q\", path)\r\n" + "		}\r\n"
+				+ "		return os.Open(file)\r\n" + "	})\r\n"
+				+ "	importer := importerFunc(func(importPath string) (*types.Package, error) {\r\n"
+				+ "		path, ok := cfg.ImportMap[importPath] // resolve vendoring, etc\r\n" + "		if !ok {\r\n"
+				+ "			return nil, fmt.Errorf(\"can't resolve import %q\", path)\r\n" + "		}\r\n"
+				+ "		return compilerImporter.Import(path)\r\n" + "	})\r\n" + "	tc := &types.Config{\r\n"
+				+ "		Importer: importer,\r\n"
+				+ "		Sizes:    types.SizesFor(\"gc\", build.Default.GOARCH), // assume gccgo = gc?\r\n" + "	}\r\n"
+				+ "	info := &types.Info{\r\n" + "		Types:      make(map[ast.Expr]types.TypeAndValue),\r\n"
+				+ "		Defs:       make(map[*ast.Ident]types.Object),\r\n"
+				+ "		Uses:       make(map[*ast.Ident]types.Object),\r\n"
+				+ "		Implicits:  make(map[ast.Node]types.Object),\r\n"
+				+ "		Scopes:     make(map[ast.Node]*types.Scope),\r\n"
+				+ "		Selections: make(map[*ast.SelectorExpr]*types.Selection),\r\n" + "	}\r\n"
+				+ "	pkg, err := tc.Check(cfg.ImportPath, fset, files, info)\r\n" + "	if err != nil {\r\n"
+				+ "		if cfg.SucceedOnTypecheckFailure {\r\n" + "			// Silently succeed; let the compiler\r\n"
+				+ "			// report type errors.\r\n" + "			err = nil\r\n" + "		}\r\n"
+				+ "		return nil, err\r\n" + "	}\r\n" + "\r\n" + "	// Register fact types with gob.\r\n"
+				+ "	// In VetxOnly mode, analyzers are only for their facts,\r\n"
+				+ "	// so we can skip any analysis that neither produces facts\r\n"
+				+ "	// nor depends on any analysis that produces facts.\r\n"
+				+ "	// Also build a map to hold working state and result.\r\n" + "	type action struct {\r\n"
+				+ "		once        sync.Once\r\n" + "		result      interface{}\r\n"
+				+ "		err         error\r\n" + "		usesFacts   bool // (transitively uses)\r\n"
+				+ "		diagnostics []analysis.Diagnostic\r\n" + "	}\r\n"
+				+ "	actions := make(map[*analysis.Analyzer]*action)\r\n"
+				+ "	var registerFacts func(a *analysis.Analyzer) bool\r\n"
+				+ "	registerFacts = func(a *analysis.Analyzer) bool {\r\n" + "		act, ok := actions[a]\r\n"
+				+ "		if !ok {\r\n" + "			act = new(action)\r\n" + "			var usesFacts bool\r\n"
+				+ "			for _, f := range a.FactTypes {\r\n" + "				usesFacts = true\r\n"
+				+ "				gob.Register(f)\r\n" + "			}\r\n"
+				+ "			for _, req := range a.Requires {\r\n" + "				if registerFacts(req) {\r\n"
+				+ "					usesFacts = true\r\n" + "				}\r\n" + "			}\r\n"
+				+ "			act.usesFacts = usesFacts\r\n" + "			actions[a] = act\r\n" + "		}\r\n"
+				+ "		return act.usesFacts\r\n" + "	}\r\n" + "	var filtered []*analysis.Analyzer\r\n"
+				+ "	for _, a := range analyzers {\r\n" + "		if registerFacts(a) || !cfg.VetxOnly {\r\n"
+				+ "			filtered = append(filtered, a)\r\n" + "		}\r\n" + "	}\r\n"
+				+ "	analyzers = filtered\r\n" + "\r\n" + "	// Read facts from imported packages.\r\n"
+				+ "	read := func(path string) ([]byte, error) {\r\n"
+				+ "		if vetx, ok := cfg.PackageVetx[path]; ok {\r\n" + "			return ioutil.ReadFile(vetx)\r\n"
+				+ "		}\r\n" + "		return nil, nil // no .vetx file, no facts\r\n" + "	}\r\n"
+				+ "	facts, err := facts.Decode(pkg, read)\r\n" + "	if err != nil {\r\n" + "		return nil, err\r\n"
+				+ "	}\r\n" + "\r\n" + "	// In parallel, execute the DAG of analyzers.\r\n"
+				+ "	var exec func(a *analysis.Analyzer) *action\r\n"
+				+ "	var execAll func(analyzers []*analysis.Analyzer)\r\n"
+				+ "	exec = func(a *analysis.Analyzer) *action {\r\n" + "		act := actions[a]\r\n"
+				+ "		act.once.Do(func() {\r\n"
+				+ "			execAll(a.Requires) // prefetch dependencies in parallel\r\n" + "\r\n"
+				+ "			// The inputs to this analysis are the\r\n"
+				+ "			// results of its prerequisites.\r\n"
+				+ "			inputs := make(map[*analysis.Analyzer]interface{})\r\n" + "			var failed []string\r\n"
+				+ "			for _, req := range a.Requires {\r\n" + "				reqact := exec(req)\r\n"
+				+ "				if reqact.err != nil {\r\n"
+				+ "					failed = append(failed, req.String())\r\n" + "					continue\r\n"
+				+ "				}\r\n" + "				inputs[req] = reqact.result\r\n" + "			}\r\n" + "\r\n"
+				+ "			// Report an error if any dependency failed.\r\n" + "			if failed != nil {\r\n"
+				+ "				sort.Strings(failed)\r\n"
+				+ "				act.err = fmt.Errorf(\"failed prerequisites: %s\", strings.Join(failed, \", \"))\r\n"
+				+ "				return\r\n" + "			}\r\n" + "\r\n" + "			pass := &analysis.Pass{\r\n"
+				+ "				Analyzer:          a,\r\n" + "				Fset:              fset,\r\n"
+				+ "				Files:             files,\r\n" + "				OtherFiles:        cfg.NonGoFiles,\r\n"
+				+ "				Pkg:               pkg,\r\n" + "				TypesInfo:         info,\r\n"
+				+ "				ResultOf:          inputs,\r\n"
+				+ "				Report:            func(d analysis.Diagnostic) { act.diagnostics = append(act.diagnostics, d) },\r\n"
+				+ "				ImportObjectFact:  facts.ImportObjectFact,\r\n"
+				+ "				ExportObjectFact:  facts.ExportObjectFact,\r\n"
+				+ "				ImportPackageFact: facts.ImportPackageFact,\r\n"
+				+ "				ExportPackageFact: facts.ExportPackageFact,\r\n" + "			}\r\n" + "\r\n"
+				+ "			t0 := time.Now()\r\n" + "			act.result, act.err = a.Run(pass)\r\n"
+				+ "			if false {\r\n" + "				log.Printf(\"analysis %s = %s\", pass, time.Since(t0))\r\n"
+				+ "			}\r\n" + "		})\r\n" + "		return act\r\n" + "	}\r\n"
+				+ "	execAll = func(analyzers []*analysis.Analyzer) {\r\n" + "		var wg sync.WaitGroup\r\n"
+				+ "		for _, a := range analyzers {\r\n" + "			wg.Add(1)\r\n"
+				+ "			go func(a *analysis.Analyzer) {\r\n" + "				_ = exec(a)\r\n"
+				+ "				wg.Done()\r\n" + "			}(a)\r\n" + "		}\r\n" + "		wg.Wait()\r\n"
+				+ "	}\r\n" + "\r\n" + "	execAll(analyzers)\r\n" + "\r\n"
+				+ "	// Return diagnostics and errors from root analyzers.\r\n"
+				+ "	results := make([]result, len(analyzers))\r\n" + "	for i, a := range analyzers {\r\n"
+				+ "		act := actions[a]\r\n" + "		results[i].a = a\r\n" + "		results[i].err = act.err\r\n"
+				+ "		results[i].diagnostics = act.diagnostics\r\n" + "	}\r\n" + "\r\n"
+				+ "	data := facts.Encode()\r\n"
+				+ "	if err := ioutil.WriteFile(cfg.VetxOutput, data, 0666); err != nil {\r\n"
+				+ "		return nil, fmt.Errorf(\"failed to write analysis facts: %v\", err)\r\n" + "	}\r\n" + "\r\n"
+				+ "	return results, nil\r\n" + "}\r\n" + "\r\n" + "type result struct {\r\n"
+				+ "	a           *analysis.Analyzer\r\n" + "	diagnostics []analysis.Diagnostic\r\n"
+				+ "	err         error\r\n" + "}\r\n" + "\r\n"
+				+ "type importerFunc func(path string) (*types.Package, error)\r\n" + "\r\n"
+				+ "func (f importerFunc) Import(path string) (*types.Package, error) { return f(path) }");
+		go.setName("Go");
+		languageList.add(go);
+
+		Language html = new Language();
+		html.setConsoleString("html");
+		html.setSourceCode("<!DOCTYPE html>\r\n" + "<html lang=\"en\">\r\n" + "<head>\r\n"
+				+ "  <meta charset=\"utf-8\"/>\r\n" + "  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>\r\n"
+				+ "  <meta name=\"description\" content=\"Internet of Things (IoT) - Learn more about the software solutions and products of Bosch Software Innovations.\"/>\r\n"
+				+ "  <meta name=\"author\" content=\"Bosch Software Innovations\"/>\r\n"
+				+ "  <meta name=\"robots\" content=\"index, follow\"/>\r\n"
+				+ "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>\r\n"
+				+ "  <title>Internet of Things (IoT) Experts: Bosch Software Innovations</title>\r\n"
+				+ "  <meta http-equiv=\"language\" content=\"en\"/>\r\n" + "  <!-- Disable tap highlight on IE -->\r\n"
+				+ "  <meta name=\"msapplication-tap-highlight\" content=\"no\"/>\r\n"
+				+ "  <!-- Tile icon for Win8, Win8.1 and above -->\r\n"
+				+ "  <!--<meta name=\"msapplication-TileColor\" content=\"#ffffff\"/>-->\r\n"
+				+ "  <meta name=\"msapplication-TileImage\" content=\"https://www.bosch-si.com/media/bosch_si/legal/bosch-tiles_144x144.png\"/>\r\n"
+				+ "  <meta name='msapplication-square70x70logo' content=\"https://www.bosch-si.com/media/bosch_si/legal/bosch-tiles_128x128.png\" />\r\n"
+				+ "  <meta name='msapplication-square150x150logo' content=\"https://www.bosch-si.com/media/bosch_si/legal/bosch-tiles_270x270.png\" />\r\n"
+				+ "  <meta name='msapplication-wide310x150logo' content=\"https://www.bosch-si.com/media/bosch_si/legal/bosch-tiles_270x558.png\" />\r\n"
+				+ "  <meta name='msapplication-square310x310logo' content=\"https://www.bosch-si.com/media/bosch_si/legal/bosch-tiles_558x558.png\" />\r\n"
+				+ "  <!-- Color the status bar on mobile devices -->\r\n"
+				+ "  <meta name=\"theme-color\" content=\"#ffffff\"/>\r\n" + "  <!-- Styles -->\r\n"
+				+ "  <link rel=\"stylesheet\" href=\"https://www.bosch-si.com/media/res/css/main.css\"/>\r\n"
+				+ "  <!-- for search ranking over https -->\r\n"
+				+ "  <link rel=\"canonical\" href=\"https://www.bosch-si.com/corporate/home/homepage.html\"/>\r\n"
+				+ "  <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"https://www.bosch-si.com/media/res/images/favicon.png\"/>\r\n"
+				+ "  <!-- Social: Facebook / Open Graph -->\r\n"
+				+ "  <meta property=\"og:title\" content=\"Internet of Things (IoT) Experts: Bosch Software Innovations\"/>\r\n"
+				+ "  <meta property=\"og:site_name\" content=\"Bosch Software Innovations\"/>\r\n"
+				+ "  <meta property=\"og:url\" content=\"https://www.bosch-si.com/corporate/home/homepage.html\"/>\r\n"
+				+ "  <meta property=\"og:description\" content=\"Internet of Things (IoT) - Learn more about the software solutions and products of Bosch Software Innovations.\"/>\r\n"
+				+ "  <meta property=\"og:image\" content=\"https://www.bosch-si.com/media/bosch_si/iot_platform/aws-marketplace_stages_16-9_dark-layer.jpg\"/> \r\n"
+				+ "  <meta property=\"og:type\" content=\"website\"/>\r\n"
+				+ "  <meta property=\"fb:app_id\" content=\"1389892087910588\"/>\r\n" + "  <!-- Social: Twitter -->\r\n"
+				+ "  <meta name=\"twitter:card\" content=\"summary\">\r\n"
+				+ "  <meta name=\"twitter:title\" content=\"Internet of Things (IoT) Experts: Bosch Software Innovations\"/>\r\n"
+				+ "  <meta name=\"twitter:description\" content=\"Internet of Things (IoT) - Learn more about the software solutions and products of Bosch Software Innovations.\"/>\r\n"
+				+ "  <meta name=\"twitter:image\" content=\"https://www.bosch-si.com/media/bosch_si/iot_platform/aws-marketplace_stages_16-9_dark-layer.jpg\"/>\r\n"
+				+ "  <meta name=\"twitter:creator\" content=\"@boschsi\">\r\n" + "  <base href=\"/\" />\r\n"
+				+ "  <script type=\"text/javascript\" src=\"/media/res/js/modernizr_custom.js\"></script>\r\n"
+				+ "  <meta name=\"DCSext.wtg_brand\" content=\"BOSCH\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_country\" content=\"DE\"/> \r\n"
+				+ "<meta name=\"DCSext.wtg_lang\" content=\"en\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_bsector\" content=\"TOGE\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_division\" content=\"INST\"/> \r\n"
+				+ "<meta name=\"DCSext.wtg_bu\" content=\"INST\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_bth1\" content=\"144\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_bth2\" content=\"144\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_bth3\" content=\"144\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_rpt\" content=\"\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_reg\" content=\"\"/>\r\n"
+				+ "<meta name=\"DCSext.wtg_contenttype\" content=\"\"/>\r\n" + "</head>\r\n" + "\r\n"
+				+ "<body data-ng-app=\"bosch\" data-ng-strict-di>\r\n" + "  <div id=\"fb-root\"></div>\r\n"
+				+ "  <!--googleoff: all--><o-cookie-law>\r\n"
+				+ "    <div class=\"O-CookieLaw\" data-ng-init=\"$ctrl.delay=250\" data-ng-class=\"{'O-CookieLaw--initialized' : $ctrl.initialized}\">\r\n"
+				+ "        <div class=\"O-CookieLaw__backgroundOverlay ng-hide\" data-ng-show=\"$ctrl.expanded\">\r\n"
+				+ "            <div class=\"O-CookieLaw__container container\">\r\n"
+				+ "                <div class=\"O-CookieLaw__text col-xs-12 col-sm-12 col-md-9\">\r\n"
+				+ "                	\r\n"
+				+ "	                    <div class=\"O-CookieLaw__heading\" data-deletetext=\"The cookies were successfully deleted and deactivated. \">\r\n"
+				+ "	                       Important Cookie Information\r\n" + "	                    </div>\r\n"
+				+ "                    \r\n" + "                    <p class=\"O-CookieLaw__body\">\r\n"
+				+ "This website uses cookies for reasons of functionality, comfort, and statistics. If you consent to this use of cookies, please click &#34;Ok&#34;. If you like to disable the cookies, please click <a class=\"A-Link A-Link--inline\" id=\"btnCookieDeactivated\"> here.</a>\r\n"
+				+ "For more information see our\r\n" + "		<a class=\"A-Link A-Link--inline\" target=\"_self\"\r\n"
+				+ "			href=\"/lp/privacy-statement.html\">\r\n"
+				+ "			<span class=\"A-Link__linkText\">Privacy Policy</span>\r\n"
+				+ "			<span class=\"A-Link__Icon\">\r\n"
+				+ "				<svg class=\"A-Icon A-Icon--forward-right\"\r\n"
+				+ "					width=\"10\"\r\n" + "					height=\"10\">\r\n"
+				+ "					<title></title>\r\n"
+				+ "					<use xlink:href=\"/media/res/images/svg/iconsprite.svg#forward-right\"/>\r\n"
+				+ "				</svg></span></a>\r\n" + "\r\n" + "</p>\r\n" + "                </div>\r\n"
+				+ "                <div class=\"O-CookieLaw__buttons col-xs-12 col-sm-12 col-md-3\">\r\n"
+				+ "                    <span data-ng-click=\"$ctrl.accept()\">\r\n"
+				+ "                        <a class=\"A-Link A-Link--button\" target=\"_self\">\r\n"
+				+ "                            <span class=\"A-Link__linkText\">OK</span>\r\n"
+				+ "                        </a>\r\n" + "                    </span>                   \r\n"
+				+ "                    \r\n" + "                </div>\r\n" + "            </div>\r\n"
+				+ "        </div>\r\n" + "    </div>\r\n" + "</o-cookie-law>\r\n" + " <!--googleon: all-->\r\n"
+				+ "  \r\n" + "  <header class=\"O-Header\">\r\n" + "    <div class=\"O-Header__logoRow\">\r\n"
+				+ "      <div class=\"container-fluid\">\r\n" + "      \r\n" + "      	\r\n"
+				+ "      		<a href=\"/corporate/home/homepage.html\" target=\"_self\" class=\"O-Header__brandLogoLink\">\r\n"
+				+ "      	\r\n"
+				+ "      	<img src=\"/media/bosch_si/corporate/homepage_1/logo/logo_en_img_w170.jpg\" alt=\"Bosch Software Innovations\" class=\"O-Header__brandLogoImg\"/>\r\n"
+				+ "      	\r\n" + "      		</a>\r\n" + "      	\r\n" + "      \r\n" + "        \r\n"
+				+ "        <div class=\"O-Header__meta\">\r\n" + "          <nav class=\"M-Navigation\">\r\n"
+				+ "            <ul class=\"M-Navigation-Meta\">            \r\n" + "            	\r\n"
+				+ "            		  \r\n" + "		            	\r\n"
+				+ "												\r\n" + "						\r\n"
+				+ "											\r\n" + "						\r\n"
+				+ "					\r\n" + "					\r\n" + "										\r\n"
+				+ "	                <li class=\"M-Navigation__item M-Navigation-Meta__item\">\r\n"
+				+ "	                	<a href=\"/corporate/home/homepage.html\" class=\"M-Navigation__link M-Navigation-Meta__link M-Navigation__link--active M-Navigation-Meta__link--active\" target=\"_self\">Corporate website</a>	\r\n"
+				+ "	        		</li>\r\n" + "     			\r\n" + "            		\r\n"
+				+ "								\r\n" + "					\r\n" + "					\r\n"
+				+ "					\r\n" + "						\r\n"
+				+ "										\r\n"
+				+ "	                <li class=\"M-Navigation__item M-Navigation-Meta__item\">\r\n"
+				+ "	                	<a href=\"https://bosch-si.secure.force.com/content/FormDisplayPage?f=pdqPW\" class=\"M-Navigation__link M-Navigation-Meta__link\" target=\"_blank\">Newsletter</a>	\r\n"
+				+ "	        		</li>\r\n" + "     			\r\n" + "            		\r\n"
+				+ "								\r\n" + "					\r\n" + "					\r\n"
+				+ "					\r\n" + "						\r\n"
+				+ "										\r\n"
+				+ "	                <li class=\"M-Navigation__item M-Navigation-Meta__item\">\r\n"
+				+ "	                	<a href=\"https://bosch-si.secure.force.com/content/FormDisplayPage?f=fqnPU\" class=\"M-Navigation__link M-Navigation-Meta__link\" target=\"_blank\">Contact</a>	\r\n"
+				+ "	        		</li>\r\n" + "     			\r\n" + "            		  \r\n"
+				+ "		            	\r\n" + "												\r\n"
+				+ "						\r\n" + "										\r\n"
+				+ "						\r\n" + "					\r\n" + "					\r\n"
+				+ "										\r\n"
+				+ "	                <li class=\"M-Navigation__item M-Navigation-Meta__item\">\r\n"
+				+ "	                	<a href=\"/corporate/home/regional-websites.html\" class=\"M-Navigation__link M-Navigation-Meta__link\" target=\"_self\">Regional websites</a>	\r\n"
+				+ "	        		</li>\r\n" + "     							\r\n" + "			      	\r\n"
+				+ "			    		\r\n" + "			    	\r\n"
+				+ "			    		<li class=\"M-Navigation-Meta__languageSelector\">\r\n"
+				+ "	<ul class=\"M-LanguageSelector\">\r\n"
+				+ "			    	<li class=\"M-LanguageSelector__language \">\r\n"
+				+ "			        	<a class=\"M-LanguageSelector__link\" \r\n"
+				+ "		        				href=\"/de/unternehmen/home/homepage.html\"\r\n"
+				+ "			        	 target=\"_self\">Deutsch </a>\r\n" + "			    	</li>\r\n"
+				+ "			    	<li class=\"M-LanguageSelector__language M-LanguageSelector__language--active\">\r\n"
+				+ "			        	<a class=\"M-LanguageSelector__link\" \r\n"
+				+ "			        	 target=\"_self\">English </a>\r\n" + "			    	</li>\r\n"
+				+ "	</ul>\r\n" + "</li>\r\n" + " \r\n" + "			    	    \r\n" + "			           	\r\n"
+				+ "            </ul>\r\n" + "          </nav>  \r\n"
+				+ "           <div class=\"A-Text__brandIdentifier\">\r\n" + "		\r\n"
+				+ "			Software Innovations\r\n" + "				\r\n" + "		\r\n" + "	</div>\r\n"
+				+ "        </div>\r\n" + "      </div>\r\n" + "    </div>\r\n" + "      \r\n"
+				+ "    <div class=\"O-Header__navRow\">\r\n" + "        	\r\n"
+				+ "	      <m-main-navigation class=\"M-Navigation M-Navigation-Main\">\r\n" + "	        <nav>\r\n"
+				+ "	         <div class=\"container-fluid\">\r\n" + "	            <button type=\"button\"\r\n"
+				+ "	                    class=\"M-Navigation-Main__toggle\"\r\n"
+				+ "	                    data-ng-class=\"{'M-Navigation-Main__toggle--active': $ctrl.showNavigation}\"\r\n"
+				+ "	                    data-ng-click=\"$ctrl.showNavigation = !$ctrl.showNavigation\">\r\n"
+				+ "	              <span class=\"M-Navigation-Main__toggleBar\"></span>\r\n"
+				+ "	              <span class=\"M-Navigation-Main__toggleBar\"></span>\r\n"
+				+ "	              <span class=\"M-Navigation-Main__toggleBar\"></span>\r\n"
+				+ "	              <span class=\"M-Navigation-Main__toggleBar\"></span>\r\n"
+				+ "	            </button>\r\n" + "	          </div>\r\n"
+				+ "	          <div class=\"M-Navigation-Main__itemsWrapper\">       \r\n" + "	          ");
+		html.setName("Html");
+		languageList.add(html);
+
+		Language php = new Language();
+		php.setConsoleString("php");
+		php.setSourceCode("#!/usr/local/bin/php -q\r\n" + "<?php\r\n" + "error_reporting (E_ALL);\r\n" + "\r\n"
+				+ "/* Das Skript wartet auf hereinkommende Verbindungsanforderungen. */\r\n" + "set_time_limit (0);\r\n"
+				+ "\r\n" + "/* Die implizite Ausgabe wird eingeschaltet, so dass man sieht,\r\n"
+				+ " * was gesendet wurde. */\r\n" + "ob_implicit_flush ();\r\n" + "\r\n"
+				+ "$address = '192.168.1.53';\r\n" + "$port = 10000;\r\n" + "\r\n"
+				+ "if (($sock = socket_create(AF_INET, SOCK_STREAM, SOL_TCP)) === false) {\r\n"
+				+ "    echo \"socket_create() fehlgeschlagen: Grund: \" . socket_strerror(socket_last_error()) . \"\\n\";\r\n"
+				+ "}\r\n" + "\r\n" + "if (socket_bind($sock, $address, $port) === false) {\r\n"
+				+ "    echo \"socket_bind() fehlgeschlagen: Grund: \" . socket_strerror(socket_last_error($sock)) . \"\\n\";\r\n"
+				+ "}\r\n" + "\r\n" + "if (socket_listen($sock, 5) === false) {\r\n"
+				+ "    echo \"socket_listen() fehlgeschlagen: Grund: \" . socket_strerror(socket_last_error($sock)) . \"\\n\";\r\n"
+				+ "}\r\n" + "\r\n" + "do {\r\n" + "    if (($msgsock = socket_accept($sock)) === false) {\r\n"
+				+ "        echo \"socket_accept() fehlgeschlagen: Grund: \" . socket_strerror(socket_last_error($sock)) . \"\\n\";\r\n"
+				+ "        break;\r\n" + "    }\r\n" + "    /* Anweisungen senden. */\r\n"
+				+ "    $msg = \"\\nWillkommen auf dem PHP-Testserver.  \\n\" .\r\n"
+				+ "        \"Um zu beenden, geben Sie 'quit' ein. Um den Server herunterzufahren, geben Sie 'shutdown' ein.\\n\";\r\n"
+				+ "    socket_write($msgsock, $msg, strlen($msg));\r\n" + "\r\n" + "    do {\r\n"
+				+ "        if (false === ($buf = socket_read ($msgsock, 2048, PHP_NORMAL_READ))) {\r\n"
+				+ "            echo \"socket_read() fehlgeschlagen: Grund: \" . socket_strerror(socket_last_error($msgsock)) . \"\\n\";\r\n"
+				+ "            break 2;\r\n" + "        }\r\n" + "        if (!$buf = trim ($buf)) {\r\n"
+				+ "            continue;\r\n" + "        }\r\n" + "        if ($buf == 'quit') {\r\n"
+				+ "            break;\r\n" + "        }\r\n" + "        if ($buf == 'shutdown') {\r\n"
+				+ "            socket_close ($msgsock);\r\n" + "            break 2;\r\n" + "        }\r\n"
+				+ "        $talkback = \"PHP: Sie haben '$buf' eingegeben.\\n\";\r\n"
+				+ "        socket_write ($msgsock, $talkback, strlen ($talkback));\r\n"
+				+ "        echo \"$buf\\n\";\r\n" + "    } while (true);\r\n" + "    socket_close ($msgsock);\r\n"
+				+ "} while (true);\r\n" + "\r\n" + "socket_close ($sock);\r\n" + "?>" + "\r\n" + "<?php\r\n"
+				+ "error_reporting(E_ALL);\r\n" + "\r\n" + "echo \"<h2>TCP/IP-Verbindung</h2>\\n\";\r\n" + "\r\n"
+				+ "/* Den Port für den WWW-Dienst ermitteln. */\r\n"
+				+ "$service_port = getservbyname('www', 'tcp');\r\n" + "\r\n"
+				+ "/* Die  IP-Adresse des Zielrechners ermitteln. */\r\n"
+				+ "$address = gethostbyname('www.example.com');\r\n" + "\r\n"
+				+ "/* Einen TCP/IP-Socket erzeugen. */\r\n"
+				+ "$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);\r\n" + "if ($socket === false) {\r\n"
+				+ "    echo \"socket_create() fehlgeschlagen: Grund: \" . socket_strerror(socket_last_error()) . \"\\n\";\r\n"
+				+ "} else {\r\n" + "    echo \"OK.\\n\";\r\n" + "}\r\n" + "\r\n"
+				+ "echo \"Versuche, zu '$address' auf Port '$service_port' zu verbinden ...\";\r\n"
+				+ "$result = socket_connect($socket, $address, $service_port);\r\n" + "if ($result === false) {\r\n"
+				+ "    echo \"socket_connect() fehlgeschlagen.\\nGrund: ($result) \" . socket_strerror(socket_last_error($socket)) . \"\\n\";\r\n"
+				+ "} else {\r\n" + "    echo \"OK.\\n\";\r\n" + "}\r\n" + "\r\n"
+				+ "$in = \"HEAD / HTTP/1.1\\r\\n\";\r\n" + "$in .= \"Host: www.example.com\\r\\n\";\r\n"
+				+ "$in .= \"Connection: Close\\r\\n\\r\\n\";\r\n" + "$out = '';\r\n" + "\r\n"
+				+ "echo \"HTTP HEAD request senden ...\";\r\n" + "socket_write($socket, $in, strlen($in));\r\n"
+				+ "echo \"OK.\\n\";\r\n" + "\r\n" + "echo \"Serverantwort lesen:\\n\\n\";\r\n"
+				+ "while ($out = socket_read($socket, 2048)) {\r\n" + "    echo $out;\r\n" + "}\r\n" + "\r\n"
+				+ "echo \"Socket schließen ...\";\r\n" + "socket_close($socket);\r\n" + "echo \"OK.\\n\\n\";\r\n"
+				+ "?>\r\n" + "");
+		php.setName("Php");
+		languageList.add(php);
+
+		// Language go = new Language();
+		// go.setConsoleString("go");
+		// go.setSourceCode("");
+		// go.setName("Go");
+		// languageList.add(go);
+
 	}
-	
+
 	public Language getFirstLanguage() {
-		position  = RandomUtils.nextInt(0, languageList.size());
+		position = RandomUtils.nextInt(0, languageList.size());
 		return languageList.get(position);
 	}
-	
+
 	public Language getNext() {
-		position = (position+1)%languageList.size();
+		position = (position + 1) % languageList.size();
 		return languageList.get(position);
 	}
-	
+
 	public Language getPrevious() {
 		position--;
-		if(position<0) {
-			position = languageList.size()-1;
+		if (position < 0) {
+			position = languageList.size() - 1;
 		}
 		return languageList.get(position);
 	}
-	
+
 	public Language getCurrent() {
 		return languageList.get(position);
 	}
-	
+
 	public static String prepareLanguage(Language language) {
-		return "nano program."+language.getConsoleString();
+		return "nano " + language.getName().toLowerCase() + "." + language.getConsoleString();
 	}
-	
+
 }
